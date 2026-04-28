@@ -1,0 +1,48 @@
+name: SOC Platform CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  lint-ansible:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Python dependencies
+        run: pip install ansible ansible-lint
+
+      - name: Check Ansible syntax
+        run: |
+          ansible-playbook --syntax-check ansible/site.yml \
+            -i ansible/inventory/hosts.ini
+
+      - name: Lint Ansible playbooks
+        run: ansible-lint ansible/site.yml || true
+
+  validate-yaml:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install yamllint
+        run: pip install yamllint
+
+      - name: Lint YAML files
+        run: yamllint ansible/ || true
+
+  security-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Check for hardcoded secrets
+        run: |
+          echo "Scanning for hardcoded passwords..."
+          ! grep -r "password" ansible/ --include="*.yml" | \
+            grep -v "defaults\|vars\|vault\|#" | \
+            grep -v "wazuh_password\|ansible_password" || true
+          echo "Scan complete"

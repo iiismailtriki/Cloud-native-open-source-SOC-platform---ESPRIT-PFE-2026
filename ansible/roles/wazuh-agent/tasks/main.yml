@@ -1,0 +1,18 @@
+---
+- name: Download Wazuh agent
+  get_url:
+    url: "https://packages.wazuh.com/4.x/apt/pool/main/w/wazuh-agent/wazuh-agent_{{ wazuh_version }}-1_amd64.deb"
+    dest: /tmp/wazuh-agent.deb
+
+- name: Install Wazuh agent
+  apt:
+    deb: /tmp/wazuh-agent.deb
+  environment:
+    WAZUH_MANAGER: "{{ wazuh_manager_ip }}"
+    WAZUH_AGENT_NAME: "{{ inventory_hostname }}"
+
+- name: Enable and start Wazuh agent
+  systemd:
+    name: wazuh-agent
+    enabled: yes
+    state: started

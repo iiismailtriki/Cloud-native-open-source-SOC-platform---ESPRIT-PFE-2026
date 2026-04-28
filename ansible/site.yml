@@ -1,0 +1,12 @@
+---
+- name: Apply common configuration to all nodes
+  hosts: all
+  become: yes
+  roles:
+    - common
+
+- name: Deploy Wazuh agents on Linux hosts
+  hosts: wazuh_agents
+  become: yes
+  roles:
+    - wazuh-agent

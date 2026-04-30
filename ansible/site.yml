@@ -5,6 +5,18 @@
   roles:
     - common
 
+- name: Deploy k3s master
+  hosts: k3s_master
+  become: yes
+  roles:
+    - k3s_server
+
+- name: Deploy k3s workers
+  hosts: k3s_workers
+  become: yes
+  roles:
+    - k3s_agent
+
 - name: Deploy Wazuh agents on Linux hosts
   hosts: wazuh_agents
   become: yes

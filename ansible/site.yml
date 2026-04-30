@@ -22,3 +22,9 @@
   become: yes
   roles:
     - wazuh-agent
+
+- name: Deploy SOC tools on worker2
+  hosts: worker2
+  become: yes
+  roles:
+    - soc-tools

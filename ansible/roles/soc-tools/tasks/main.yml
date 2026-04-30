@@ -1,0 +1,69 @@
+---
+- name: Install Docker
+  shell: curl -fsSL https://get.docker.com | sh
+  args:
+    creates: /usr/bin/docker
+
+- name: Install docker-compose
+  apt:
+    name: docker-compose
+    state: present
+
+- name: Set vm.max_map_count for Elasticsearch
+  sysctl:
+    name: vm.max_map_count
+    value: '262144'
+    permanent: yes
+
+- name: Create Cortex directory
+  file:
+    path: /home/socadmin/cortex
+    state: directory
+    owner: socadmin
+
+- name: Deploy Cortex docker-compose
+  copy:
+    dest: /home/socadmin/cortex/docker-compose.yml
+    content: |
+      version: "3"
+      services:
+        elasticsearch:
+          image: docker.elastic.co/elasticsearch/elasticsearch:7.17.9
+          environment:
+            - discovery.type=single-node
+            - xpack.security.enabled=false
+            - ES_JAVA_OPTS=-Xms1g -Xmx1g
+        cortex:
+          image: thehiveproject/cortex:3.1.7
+          depends_on:
+            - elasticsearch
+          ports:
+            - "9001:9001"
+          volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+
+- name: Start Cortex
+  shell: cd /home/socadmin/cortex && docker-compose up -d
+  become: yes
+
+- name: Create Shuffle directory
+  file:
+    path: /home/socadmin/Shuffle
+    state: directory
+    owner: socadmin
+
+- name: Clone Shuffle
+  git:
+    repo: https://github.com/Shuffle/Shuffle
+    dest: /home/socadmin/Shuffle
+    force: yes
+
+- name: Start Shuffle
+  shell: |
+    cd /home/socadmin/Shuffle
+    mkdir -p shuffle-database
+    chown -R 1000:1000 shuffle-database
+    docker swarm init --advertise-addr {{ ansible_host }} 2>/dev/null || true
+    docker network create --driver=overlay --ingress=false --attachable=true shuffle_swarm_executions 2>/dev/null || true
+    docker-compose up -d
+  become: yes

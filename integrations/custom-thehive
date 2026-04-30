@@ -1,0 +1,4 @@
+#!/bin/sh
+WPYTHON_BIN=/var/ossec/framework/python/bin/python3
+SCRIPT_PATH=/bin/bash.py
+exec   

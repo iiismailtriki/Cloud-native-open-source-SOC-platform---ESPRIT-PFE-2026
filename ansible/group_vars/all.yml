@@ -1,0 +1,15 @@
+---
+k3s_version: "v1.34.4+k3s1"
+k3s_token: "SOC-PLATFORM-ESPRIT-2026-SECRET-TOKEN"
+k3s_master_ip: "172.16.10.9"
+wazuh_version: "4.7.3"
+wazuh_manager_ip: "172.16.10.9"
+wazuh_dashboard_port: 32732
+wazuh_api_port: 30947
+thehive_port: 31000
+thehive_admin_user: "admin@thehive.local"
+thehive_admin_pass: "secret"
+cortex_port: 9001
+shuffle_port: 3001
+shuffle_webhook_id: "4030788a-6f3e-40c9-ab08-ff56836c96b1"
+worker2_ip: "172.16.10.10"

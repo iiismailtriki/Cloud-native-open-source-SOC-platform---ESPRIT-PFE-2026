@@ -1,30 +1,36 @@
 ---
-- name: Apply common configuration to all nodes
+- name: "[1/6] Common configuration on all nodes"
   hosts: all
   become: yes
   roles:
     - common
 
-- name: Deploy k3s master
+- name: "[2/6] Deploy k3s master"
   hosts: k3s_master
   become: yes
   roles:
-    - k3s_server
+    - k3s-master
 
-- name: Deploy k3s workers
+- name: "[3/6] Deploy k3s workers"
   hosts: k3s_workers
   become: yes
   roles:
-    - k3s_agent
+    - k3s-worker
 
-- name: Deploy Wazuh agents on Linux hosts
+- name: "[4/6] Deploy Wazuh stack on Kubernetes"
+  hosts: k3s_master
+  become: yes
+  roles:
+    - soc-tools-k8s
+
+- name: "[5/6] Deploy Cortex + Shuffle on worker2"
+  hosts: worker2
+  become: yes
+  roles:
+    - soc-tools-docker
+
+- name: "[6/6] Deploy Wazuh agents on endpoints"
   hosts: wazuh_agents
   become: yes
   roles:
     - wazuh-agent
-
-- name: Deploy SOC tools on worker2
-  hosts: worker2
-  become: yes
-  roles:
-    - soc-tools

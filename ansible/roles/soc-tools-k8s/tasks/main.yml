@@ -1,0 +1,104 @@
+---
+- name: Create namespaces
+  shell: |
+    kubectl create namespace wazuh 2>/dev/null || true
+    kubectl create namespace thehive 2>/dev/null || true
+    kubectl create namespace nids 2>/dev/null || true
+  environment:
+    KUBECONFIG: /home/socadmin/.kube/config
+
+- name: Clone Wazuh Kubernetes manifests
+  git:
+    repo: https://github.com/wazuh/wazuh-kubernetes.git
+    dest: /tmp/wazuh-kubernetes
+    version: v4.9.0
+    force: yes
+
+- name: Deploy Wazuh stack
+  shell: |
+    kubectl apply -f /tmp/wazuh-kubernetes/wazuh/base/storage-class.yaml 2>/dev/null || true
+    kubectl apply -f /tmp/wazuh-kubernetes/wazuh/indexer/ 2>/dev/null || true
+    kubectl apply -f /tmp/wazuh-kubernetes/wazuh/wazuh_managers.yaml 2>/dev/null || true
+    kubectl apply -f /tmp/wazuh-kubernetes/wazuh/dashboard/ 2>/dev/null || true
+  environment:
+    KUBECONFIG: /home/socadmin/.kube/config
+
+- name: Deploy TheHive
+  shell: |
+    kubectl apply -f - <<YAML
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: thehive
+      namespace: thehive
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          app: thehive
+      template:
+        metadata:
+          labels:
+            app: thehive
+        spec:
+          nodeSelector:
+            kubernetes.io/hostname: worker2
+          containers:
+          - name: thehive
+            image: strangebee/thehive:5.2.8-1
+            ports:
+            - containerPort: 9000
+            args:
+            - "--no-config-secret"
+            - "--secret"
+            - "thehive-secret-soc-lab"
+            resources:
+              requests:
+                memory: "1Gi"
+              limits:
+                memory: "2Gi"
+    ---
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: thehive
+      namespace: thehive
+    spec:
+      type: NodePort
+      selector:
+        app: thehive
+      ports:
+      - port: 9000
+        targetPort: 9000
+        nodePort: 31000
+    YAML
+  environment:
+    KUBECONFIG: /home/socadmin/.kube/config
+
+- name: Deploy Suricata DaemonSet
+  shell: |
+    kubectl apply -f - <<YAML
+    apiVersion: apps/v1
+    kind: DaemonSet
+    metadata:
+      name: suricata
+      namespace: nids
+    spec:
+      selector:
+        matchLabels:
+          app: suricata
+      template:
+        metadata:
+          labels:
+            app: suricata
+        spec:
+          hostNetwork: true
+          containers:
+          - name: suricata
+            image: jasonish/suricata:latest
+            securityContext:
+              privileged: true
+            args: ["-i", "eth0", "--af-packet"]
+    YAML
+  environment:
+    KUBECONFIG: /home/socadmin/.kube/config

@@ -1,0 +1,19 @@
+---
+- name: Check if k3s agent is installed
+  stat:
+    path: /usr/local/bin/k3s
+  register: k3s_binary
+
+- name: Install k3s agent
+  shell: |
+    curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION="{{ k3s_version }}" \
+    K3S_URL="https://{{ k3s_master_ip }}:6443" \
+    K3S_TOKEN="{{ k3s_token }}" \
+    sh -s - agent --node-ip {{ ansible_host }}
+  when: not k3s_binary.stat.exists
+
+- name: Enable k3s-agent
+  systemd:
+    name: k3s-agent
+    enabled: yes
+    state: started

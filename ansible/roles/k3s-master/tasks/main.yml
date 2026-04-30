@@ -1,0 +1,32 @@
+---
+- name: Check if k3s is already installed
+  stat:
+    path: /usr/local/bin/k3s
+  register: k3s_binary
+
+- name: Install k3s master
+  shell: |
+    curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION="{{ k3s_version }}" \
+    K3S_TOKEN="{{ k3s_token }}" \
+    sh -s - server --cluster-init --disable traefik --node-ip {{ k3s_master_ip }}
+  when: not k3s_binary.stat.exists
+
+- name: Create .kube directory
+  file:
+    path: /home/socadmin/.kube
+    state: directory
+    owner: socadmin
+    group: socadmin
+
+- name: Copy kubeconfig
+  copy:
+    src: /etc/rancher/k3s/k3s.yaml
+    dest: /home/socadmin/.kube/config
+    remote_src: yes
+    owner: socadmin
+    mode: '0600'
+
+- name: Set KUBECONFIG in bashrc
+  lineinfile:
+    path: /home/socadmin/.bashrc
+    line: 'export KUBECONFIG=/home/socadmin/.kube/config'

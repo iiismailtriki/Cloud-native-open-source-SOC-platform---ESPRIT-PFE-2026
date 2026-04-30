@@ -1,6 +1,7 @@
 #!/bin/bash
 echo "=========================================="
 echo "   SOC Platform - Full Validation"
+echo "   $(date)"
 echo "=========================================="
 
 PASS=0
@@ -22,7 +23,13 @@ NODES=$(kubectl get nodes --no-headers 2>/dev/null | grep -c Ready)
 check "k3s nodes ready ($NODES/3)" $([ "$NODES" -eq 3 ] && echo OK || echo FAIL) "expected 3"
 
 PODS=$(kubectl get pods -n wazuh --no-headers 2>/dev/null | grep -c Running)
-check "Wazuh pods running ($PODS/4)" $([ "$PODS" -ge 4 ] && echo OK || echo FAIL) "expected 4"
+check "Wazuh pods running ($PODS/4)" $([ "$PODS" -ge 4 ] && echo OK || echo FAIL) "expected 4+"
+
+THEHIVE_POD=$(kubectl get pods -n thehive --no-headers 2>/dev/null | grep -c Running)
+check "TheHive pod running" $([ "$THEHIVE_POD" -ge 1 ] && echo OK || echo FAIL) "expected 1+"
+
+SURI=$(kubectl get pods -n nids --no-headers 2>/dev/null | grep -c Running)
+check "Suricata NIDS pods ($SURI)" $([ "$SURI" -ge 1 ] && echo OK || echo FAIL) "expected 1+"
 
 echo ""
 echo "--- Agents ---"
@@ -48,7 +55,7 @@ echo "--- Integration Tests ---"
 TOKEN=$(curl -s -k -X POST https://172.16.10.9:30947/security/user/authenticate \
   --user 'wazuh-wui:MyS3cr37P450r.*-' | \
   python3 -c "import sys,json; print(json.load(sys.stdin)['data']['token'])" 2>/dev/null)
-check "Wazuh API auth" $([ -n "$TOKEN" ] && echo OK || echo FAIL) "no token"
+check "Wazuh API authentication" $([ -n "$TOKEN" ] && echo OK || echo FAIL) "no token"
 
 CASES=$(curl -s -u admin@thehive.local:secret \
   -X POST "http://172.16.10.10:31000/api/v1/query" \
@@ -64,10 +71,17 @@ S=$(curl -s -X POST \
   python3 -c "import sys,json; d=json.load(sys.stdin); print('OK' if d.get('success') else 'FAIL')" 2>/dev/null)
 check "Shuffle webhook" "$S" "no response"
 
+AR=$(kubectl exec -n wazuh wazuh-manager-master-0 -- \
+  /var/ossec/bin/agent_control -L 2>/dev/null | grep -c "firewall-drop")
+check "Active Response configured" $([ "$AR" -ge 1 ] && echo OK || echo FAIL) "AR not found"
+
 SURI=$(kubectl get pods -n nids --no-headers 2>/dev/null | grep -c Running)
 check "Suricata NIDS ($SURI pods)" $([ "$SURI" -ge 1 ] && echo OK || echo FAIL) "no running pods"
 
 echo ""
 echo "=========================================="
-echo "  PASSED: $PASS | FAILED: $FAIL"
+TOTAL=$((PASS+FAIL))
+echo "  PASSED: $PASS / $TOTAL"
+echo "  FAILED: $FAIL / $TOTAL"
+[ "$FAIL" -eq 0 ] && echo "  STATUS: ALL SYSTEMS OPERATIONAL" || echo "  STATUS: $FAIL CHECK(S) FAILED"
 echo "=========================================="

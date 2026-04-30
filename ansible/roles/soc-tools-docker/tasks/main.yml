@@ -1,15 +1,25 @@
 ---
+- name: Check if Docker is installed
+  stat:
+    path: /usr/bin/docker
+  register: docker_installed
+
 - name: Install Docker
   shell: curl -fsSL https://get.docker.com | sh
-  args:
-    creates: /usr/bin/docker
+  when: not docker_installed.stat.exists
 
 - name: Install docker-compose
   apt:
     name: docker-compose
     state: present
 
-- name: Set vm.max_map_count for Elasticsearch
+- name: Add socadmin to docker group
+  user:
+    name: socadmin
+    groups: docker
+    append: yes
+
+- name: Set vm.max_map_count
   sysctl:
     name: vm.max_map_count
     value: '262144'
@@ -33,6 +43,7 @@
             - discovery.type=single-node
             - xpack.security.enabled=false
             - ES_JAVA_OPTS=-Xms1g -Xmx1g
+          restart: unless-stopped
         cortex:
           image: thehiveproject/cortex:3.1.7
           depends_on:
@@ -41,29 +52,29 @@
             - "9001:9001"
           volumes:
             - /var/run/docker.sock:/var/run/docker.sock
+          restart: unless-stopped
 
 - name: Start Cortex
   shell: cd /home/socadmin/cortex && docker-compose up -d
-  become: yes
-
-- name: Create Shuffle directory
-  file:
-    path: /home/socadmin/Shuffle
-    state: directory
-    owner: socadmin
 
 - name: Clone Shuffle
   git:
     repo: https://github.com/Shuffle/Shuffle
     dest: /home/socadmin/Shuffle
-    force: yes
+    force: no
+
+- name: Create Shuffle database dir
+  file:
+    path: /home/socadmin/Shuffle/shuffle-database
+    state: directory
+    owner: 1000
+    group: 1000
+
+- name: Init Shuffle swarm network
+  shell: |
+    docker swarm init --advertise-addr {{ ansible_host }} 2>/dev/null || true
+    docker network create --driver=overlay --ingress=false \
+      --attachable=true shuffle_swarm_executions 2>/dev/null || true
 
 - name: Start Shuffle
-  shell: |
-    cd /home/socadmin/Shuffle
-    mkdir -p shuffle-database
-    chown -R 1000:1000 shuffle-database
-    docker swarm init --advertise-addr {{ ansible_host }} 2>/dev/null || true
-    docker network create --driver=overlay --ingress=false --attachable=true shuffle_swarm_executions 2>/dev/null || true
-    docker-compose up -d
-  become: yes
+  shell: cd /home/socadmin/Shuffle && docker-compose up -d

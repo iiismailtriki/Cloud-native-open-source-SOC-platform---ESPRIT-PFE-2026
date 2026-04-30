@@ -1,8 +1,15 @@
 ---
+- name: Check if Wazuh agent is installed
+  stat:
+    path: /var/ossec/bin/wazuh-control
+  register: wazuh_installed
+
 - name: Download Wazuh agent
   get_url:
     url: "https://packages.wazuh.com/4.x/apt/pool/main/w/wazuh-agent/wazuh-agent_{{ wazuh_version }}-1_amd64.deb"
     dest: /tmp/wazuh-agent.deb
+    timeout: 120
+  when: not wazuh_installed.stat.exists
 
 - name: Install Wazuh agent
   apt:
@@ -10,6 +17,7 @@
   environment:
     WAZUH_MANAGER: "{{ wazuh_manager_ip }}"
     WAZUH_AGENT_NAME: "{{ inventory_hostname }}"
+  when: not wazuh_installed.stat.exists
 
 - name: Enable and start Wazuh agent
   systemd:

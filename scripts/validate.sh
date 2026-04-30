@@ -1,4 +1,5 @@
 #!/bin/bash
+export KUBECONFIG=/home/socadmin/.kube/config
 echo "=========================================="
 echo "   SOC Platform - Full Validation"
 echo "   $(date)"

@@ -262,7 +262,7 @@ Duration:        0.93 seconds
 | **TheHive case creation** | HTTP 201 | Case #4 created | API verified |
 | **Brute force completion** | ~6 s | 6.37 s | 30 parallel logins |
 | **Suricata NIDS** | Active, 762k+ alerts | (same) | Running on both workers |
-| **Wazuh agents active** | 4/5 | 4/5 | Agent 008 (Windows) offline |
+| **Wazuh agents active** | 5/5 | 5/5 | Agent 008 (Windows) ACTIVE — 160 events today |
 | **Rule 100100 fired** | 2× confirmed | (same) | alerts.log verified |
 
 ---
@@ -324,7 +324,7 @@ All 14 validate.sh checks: **14/14 PASSING** (confirmed 2026-05-01 14:47 UTC)
 | Cortex 3.1.7 | ✅ Running | port 9001 (Docker Compose on worker2) |
 | Shuffle SOAR | ✅ Running | port 3001, webhooks confirmed |
 | Suricata NIDS (2 pods) | ✅ Running | worker1+worker2, 762k+ alerts |
-| Wazuh agents active | ⚠️ 4/5 | Agent 008 (Windows) disconnected |
+| Wazuh agents active | ✅ 5/5 | Agent 008 (Windows) ACTIVE — Sysmon confirmed |
 | Wazuh → Shuffle | ✅ Working | integrations.log confirmed |
 | Wazuh → TheHive | ✅ API verified | Auto-invoke under investigation |
 | Active Response (firewall-drop600) | ✅ Configured | rule 100100, location=local |

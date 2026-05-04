@@ -58,12 +58,21 @@ TOKEN=$(curl -s -k -X POST https://172.16.10.9:30947/security/user/authenticate 
   python3 -c "import sys,json; print(json.load(sys.stdin)['data']['token'])" 2>/dev/null)
 check "Wazuh API authentication" $([ -n "$TOKEN" ] && echo OK || echo FAIL) "no token"
 
-CASES=$(curl -s -u admin@thehive.local:secret \
+# TheHive: verify API reachable and count cases via SOC analyst API key
+SOC_API_KEY="9O81h9pfpC7bBvSXh+S5gQ6/4mrULoBP"
+THEHIVE_RESP=$(curl -s -H "Authorization: Bearer ${SOC_API_KEY}" \
   -X POST "http://172.16.10.10:31000/api/v1/query" \
   -H "Content-Type: application/json" \
-  -d '{"query": [{"_name": "listCase"}]}' | \
-  python3 -c "import sys,json; print(len(json.load(sys.stdin)))" 2>/dev/null)
-check "TheHive API ($CASES cases)" $([ -n "$CASES" ] && echo OK || echo FAIL) "no response"
+  -d '{"query": [{"_name": "listCase"}]}' 2>/dev/null)
+CASES=$(echo "$THEHIVE_RESP" | python3 -c "import sys,json; d=json.load(sys.stdin); print(len(d))" 2>/dev/null)
+check "TheHive API accessible" $([ -n "$CASES" ] && echo OK || echo FAIL) "no response"
+check "TheHive has cases ($CASES >= 1)" $([ -n "$CASES" ] && [ "$CASES" -ge 1 ] && echo OK || echo FAIL) "no cases found — run SSH brute force test to generate alerts"
+
+# TheHive: verify soc@soc.local user exists
+SOC_USER_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+  "http://172.16.10.10:31000/api/v1/user/soc@soc.local" \
+  -u "admin@thehive.local:secret")
+check "TheHive soc@soc.local user" $([ "$SOC_USER_STATUS" = "200" ] && echo OK || echo FAIL) "HTTP $SOC_USER_STATUS"
 
 S=$(curl -s -X POST \
   "http://172.16.10.10:3001/api/v1/hooks/webhook_4030788a-6f3e-40c9-ab08-ff56836c96b1" \
@@ -78,6 +87,10 @@ check "Active Response configured" $([ "$AR" -ge 1 ] && echo OK || echo FAIL) "A
 
 SURI=$(kubectl get pods -n nids --no-headers 2>/dev/null | grep -c Running)
 check "Suricata NIDS ($SURI pods)" $([ "$SURI" -ge 1 ] && echo OK || echo FAIL) "no running pods"
+
+# Wazuh integration scripts present
+INTEG=$(kubectl exec -n wazuh wazuh-manager-worker-0 -- ls /var/ossec/integrations/custom-thehive 2>/dev/null | wc -l)
+check "custom-thehive integration script" $([ "$INTEG" -ge 1 ] && echo OK || echo FAIL) "script missing"
 
 echo ""
 echo "=========================================="

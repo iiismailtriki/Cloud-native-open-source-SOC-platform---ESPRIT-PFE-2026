@@ -1,0 +1,73 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"batch/v1","kind":"CronJob","metadata":{"annotations":{},"name":"thehive-user-ensure","namespace":"thehive"},"spec":{"failedJobsHistoryLimit":3,"jobTemplate":{"spec":{"template":{"spec":{"containers":[{"command":["/bin/sh","-c","THEHIVE_URL=\"http://thehive.thehive.svc.cluster.local:9000\"\n# Check if user exists\nSTATUS=$(curl -s -o /dev/null -w \"%{http_code}\" \"$THEHIVE_URL/api/v1/user/soc@soc.local\" -u \"admin@thehive.local:$ADMIN_PASS\")\nif [ \"$STATUS\" = \"200\" ]; then\n  echo \"[OK] soc@soc.local user exists\"\nelse\n  echo \"[INFO] User not found (HTTP $STATUS), creating...\"\n  curl -s -X POST \"$THEHIVE_URL/api/v1/user\" \\\n    -u \"admin@thehive.local:$ADMIN_PASS\" \\\n    -H \"Content-Type: application/json\" \\\n    -d '{\"login\":\"soc@soc.local\",\"name\":\"SOC Analyst\",\"password\":\"Soc@2026!\",\"profile\":\"analyst\",\"organisation\":\"SOC\"}'\n  echo \"[INFO] Setting API key...\"\n  curl -s -X PUT \"$THEHIVE_URL/api/v1/user/soc@soc.local/key/renew\" \\\n    -u \"admin@thehive.local:$ADMIN_PASS\" \\\n    -H \"Content-Type: application/json\"\nfi\n"],"env":[{"name":"THEHIVE_API_KEY","valueFrom":{"secretKeyRef":{"key":"api-key","name":"thehive-soc-apikey"}}},{"name":"ADMIN_PASS","valueFrom":{"secretKeyRef":{"key":"admin-password","name":"thehive-soc-apikey"}}}],"image":"curlimages/curl:latest","name":"ensure-user"}],"restartPolicy":"OnFailure"}}}},"schedule":"*/5 * * * *","successfulJobsHistoryLimit":3}}
+  creationTimestamp: "2026-05-04T06:44:44Z"
+  generation: 2
+  name: thehive-user-ensure
+  namespace: thehive
+  resourceVersion: "3611169"
+  uid: 0d8661c0-8ecd-43f7-921c-83655a282140
+spec:
+  concurrencyPolicy: Allow
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    metadata: {}
+    spec:
+      template:
+        metadata: {}
+        spec:
+          containers:
+          - command:
+            - /bin/sh
+            - -c
+            - |
+              THEHIVE_URL="http://thehive.thehive.svc.cluster.local:9000"
+              ADMIN="admin@thehive.local:$ADMIN_PASS"
+              # Create SOC org if missing
+              ORG_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$THEHIVE_URL/api/v1/organisation/SOC" -u "$ADMIN")
+              if [ "$ORG_STATUS" != "200" ]; then
+                echo "Creating SOC org..."
+                curl -s -X POST "$THEHIVE_URL/api/v1/organisation" -u "$ADMIN" -H "Content-Type: application/json" -d "{\"name\":\"SOC\",\"description\":\"SOC Platform\"}"
+              fi
+              # Create user if missing
+              USER_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$THEHIVE_URL/api/v1/user/soc@soc.local" -u "$ADMIN")
+              if [ "$USER_STATUS" != "200" ]; then
+                echo "Creating soc@soc.local..."
+                curl -s -X POST "$THEHIVE_URL/api/v1/user" -u "$ADMIN" -H "Content-Type: application/json" -d "{\"login\":\"soc@soc.local\",\"name\":\"SOC Analyst\",\"profile\":\"org-admin\",\"organisation\":\"SOC\"}"
+                curl -s -X POST "$THEHIVE_URL/api/v1/user/soc@soc.local/password/set" -u "$ADMIN" -H "Content-Type: application/json" -d "{\"password\":\"SecretPassword\"}"
+                curl -s -X POST "$THEHIVE_URL/api/v1/user/soc@soc.local/key/renew" -u "$ADMIN" -H "Content-Type: application/json"
+                echo "User created"
+              else
+                echo "[OK] soc@soc.local exists"
+              fi
+            env:
+            - name: THEHIVE_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: api-key
+                  name: thehive-soc-apikey
+            - name: ADMIN_PASS
+              valueFrom:
+                secretKeyRef:
+                  key: admin-password
+                  name: thehive-soc-apikey
+            image: curlimages/curl:latest
+            imagePullPolicy: Always
+            name: ensure-user
+            resources: {}
+            terminationMessagePath: /dev/termination-log
+            terminationMessagePolicy: File
+          dnsPolicy: ClusterFirst
+          restartPolicy: OnFailure
+          schedulerName: default-scheduler
+          securityContext: {}
+          terminationGracePeriodSeconds: 30
+  schedule: '*/5 * * * *'
+  successfulJobsHistoryLimit: 3
+  suspend: false
+status:
+  lastScheduleTime: "2026-05-18T15:10:00Z"
+  lastSuccessfulTime: "2026-05-18T15:10:10Z"

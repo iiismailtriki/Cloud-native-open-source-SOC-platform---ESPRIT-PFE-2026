@@ -9,7 +9,7 @@ metadata:
   generation: 1
   name: thehive
   namespace: thehive
-  resourceVersion: "3610062"
+  resourceVersion: "3614160"
   uid: 22e07013-fd3f-4ded-9adc-c37fd177d666
 spec:
   progressDeadlineSeconds: 600
@@ -61,8 +61,8 @@ status:
     reason: NewReplicaSetAvailable
     status: "True"
     type: Progressing
-  - lastTransitionTime: "2026-05-18T14:46:10Z"
-    lastUpdateTime: "2026-05-18T14:46:10Z"
+  - lastTransitionTime: "2026-05-18T16:16:35Z"
+    lastUpdateTime: "2026-05-18T16:16:35Z"
     message: Deployment has minimum availability.
     reason: MinimumReplicasAvailable
     status: "True"

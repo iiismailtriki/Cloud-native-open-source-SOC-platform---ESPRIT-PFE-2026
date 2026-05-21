@@ -167,27 +167,33 @@
       debug:
         var: suricata_test.stderr_lines
 
-    - name: Try to enable and start Suricata
+    - name: Stop packaged Suricata service if previous start failed
       systemd:
         name: suricata
+        state: stopped
         enabled: yes
-        state: restarted
-        daemon_reload: yes
-      register: suricata_service
       failed_when: false
 
-    - name: Collect Suricata service status if it failed
+    - name: Start Suricata demo process with explicit interface
       shell: |
-        systemctl status suricata --no-pager || true
-        journalctl -u suricata -n 80 --no-pager || true
+        pkill -f "suricata.*{{ suricata_interface }}" 2>/dev/null || true
+        nohup suricata -c /etc/suricata/suricata.yaml -i {{ suricata_interface }}           --user suricata --group suricata           --pidfile /run/suricata-demo.pid           > /var/log/suricata/demo-start.log 2>&1 &
+        sleep 3
+        pgrep -af "suricata.*{{ suricata_interface }}"
+      register: suricata_demo_process
+      changed_when: true
+      failed_when: false
+
+    - name: Collect Suricata demo process logs
+      shell: |
+        cat /var/log/suricata/demo-start.log 2>/dev/null || true
+        tail -40 /var/log/suricata/suricata.log 2>/dev/null || true
       register: suricata_debug
       changed_when: false
-      when: suricata_service.failed | default(false)
 
-    - name: Print Suricata debug if service failed
+    - name: Print Suricata demo debug
       debug:
         var: suricata_debug.stdout_lines
-      when: suricata_service.failed | default(false)
 
     - name: Fail only if Suricata config test failed
       fail:

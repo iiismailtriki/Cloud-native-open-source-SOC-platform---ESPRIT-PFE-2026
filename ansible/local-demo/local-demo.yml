@@ -111,11 +111,15 @@
         state: present
         update_cache: yes
 
-    - name: Install Suricata
+    - name: Repair apt state after any previous failed suricata-update attempt
+      shell: |
+        dpkg --remove --force-remove-reinstreq suricata-update 2>/dev/null || true
+        apt-get -f install -y
+      changed_when: false
+
+    - name: Install Suricata only from OISF stable PPA
       apt:
-        name:
-          - suricata
-          - suricata-update
+        name: suricata
         state: present
         update_cache: yes
 

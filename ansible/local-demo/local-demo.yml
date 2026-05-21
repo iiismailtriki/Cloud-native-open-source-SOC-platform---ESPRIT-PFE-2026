@@ -99,7 +99,7 @@
         creates: /usr/local/bin/k3s-agent-uninstall.sh
 
 
-- name: "[LOCAL 4/5] Install Suricata IDS on worker1"
+- name: "[LOCAL 4/5] Install and configure Suricata IDS on worker1"
   hosts: suricata_nodes
   become: yes
   vars_files:
@@ -113,15 +113,82 @@
 
     - name: Install Suricata
       apt:
-        name: suricata
+        name:
+          - suricata
+          - suricata-update
         state: present
         update_cache: yes
 
-    - name: Enable and start Suricata
+    - name: Ensure Suricata log directory exists
+      file:
+        path: /var/log/suricata
+        state: directory
+        owner: suricata
+        group: suricata
+        mode: "0755"
+
+    - name: Configure Suricata default service options for Ubuntu package
+      copy:
+        dest: /etc/default/suricata
+        mode: "0644"
+        content: |
+          # Managed by Ansible for local SOC demo
+          RUN=yes
+          RUN_AS_USER=suricata
+          SURCONF=/etc/suricata/suricata.yaml
+          LISTENMODE=af-packet
+          IFACE={{ suricata_interface }}
+          OPTIONS="-i {{ suricata_interface }} --user suricata --group suricata"
+
+    - name: Set HOME_NET for local libvirt network
+      replace:
+        path: /etc/suricata/suricata.yaml
+        regexp: 'HOME_NET:.*'
+        replace: 'HOME_NET: "[192.168.122.0/24]"'
+
+    - name: Configure AF_PACKET interface in Suricata YAML
+      replace:
+        path: /etc/suricata/suricata.yaml
+        regexp: '(^\s*- interface:\s*).*$'
+        replace: '\1{{ suricata_interface }}'
+      ignore_errors: yes
+
+    - name: Test Suricata configuration before service start
+      command: suricata -T -c /etc/suricata/suricata.yaml
+      register: suricata_test
+      changed_when: false
+      failed_when: false
+
+    - name: Show Suricata config test output
+      debug:
+        var: suricata_test.stderr_lines
+
+    - name: Try to enable and start Suricata
       systemd:
         name: suricata
         enabled: yes
-        state: started
+        state: restarted
+        daemon_reload: yes
+      register: suricata_service
+      failed_when: false
+
+    - name: Collect Suricata service status if it failed
+      shell: |
+        systemctl status suricata --no-pager || true
+        journalctl -u suricata -n 80 --no-pager || true
+      register: suricata_debug
+      changed_when: false
+      when: suricata_service.failed | default(false)
+
+    - name: Print Suricata debug if service failed
+      debug:
+        var: suricata_debug.stdout_lines
+      when: suricata_service.failed | default(false)
+
+    - name: Fail only if Suricata config test failed
+      fail:
+        msg: "Suricata configuration test failed. Check output above."
+      when: suricata_test.rc != 0
 
     - name: Create Suricata demo marker
       copy:
@@ -129,6 +196,8 @@
         content: |
           Suricata IDS installed for local SOC demo.
           Interface: {{ suricata_interface }}
+          Config test rc: {{ suricata_test.rc }}
+          Service start failed: {{ suricata_service.failed | default(false) }}
 
 
 - name: "[LOCAL 5/5] Install Wazuh agent on demo nodes"
@@ -172,3 +241,39 @@
         content: |
           Wazuh agent installed for local SOC demo.
           Manager IP configured: {{ wazuh_manager_ip }}
+
+- name: "[LOCAL FINAL] Verify local SOC demo services"
+  hosts: all
+  become: yes
+  tasks:
+    - name: Check hostname
+      command: hostname
+      changed_when: false
+      register: hostname_out
+
+    - name: Check k3s nodes from master
+      shell: k3s kubectl get nodes -o wide
+      changed_when: false
+      failed_when: false
+      register: k3s_nodes
+      when: inventory_hostname in groups['k3s_master']
+
+    - name: Check Suricata service on Suricata nodes
+      shell: systemctl is-active suricata || true
+      changed_when: false
+      register: suricata_active
+      when: inventory_hostname in groups['suricata_nodes']
+
+    - name: Check Wazuh agent service
+      shell: systemctl is-active wazuh-agent || true
+      changed_when: false
+      register: wazuh_active
+      when: inventory_hostname in groups['wazuh_agents']
+
+    - name: Print demo summary
+      debug:
+        msg:
+          hostname: "{{ hostname_out.stdout }}"
+          k3s_nodes: "{{ k3s_nodes.stdout_lines | default([]) }}"
+          suricata_status: "{{ suricata_active.stdout | default('not installed on this node') }}"
+          wazuh_agent_status: "{{ wazuh_active.stdout | default('not installed on this node') }}"

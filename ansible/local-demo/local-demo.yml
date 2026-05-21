@@ -129,6 +129,45 @@
         regexp: 'HOME_NET:.*'
         replace: 'HOME_NET: "[192.168.122.0/24]"'
 
+    - name: Ensure Suricata rules directory exists
+      file:
+        path: /var/lib/suricata/rules
+        state: directory
+        owner: suricata
+        group: suricata
+        mode: "0755"
+
+    - name: Update Suricata rules with bundled suricata-update
+      command: suricata-update
+      register: suricata_update
+      changed_when: "'No changes detected' not in (suricata_update.stdout | default(''))"
+      failed_when: false
+
+    - name: Create fallback local rules file if suricata-update did not create rules
+      copy:
+        dest: /var/lib/suricata/rules/suricata.rules
+        owner: suricata
+        group: suricata
+        mode: "0644"
+        content: |
+          alert icmp any any -> any any (msg:"LOCAL DEMO ICMP test rule"; sid:1000001; rev:1;)
+      when: suricata_update.rc != 0
+
+    - name: Check Suricata rules file exists
+      stat:
+        path: /var/lib/suricata/rules/suricata.rules
+      register: suricata_rules_file
+
+    - name: Create fallback rule if rules file is missing
+      copy:
+        dest: /var/lib/suricata/rules/suricata.rules
+        owner: suricata
+        group: suricata
+        mode: "0644"
+        content: |
+          alert icmp any any -> any any (msg:"LOCAL DEMO ICMP test rule"; sid:1000001; rev:1;)
+      when: not suricata_rules_file.stat.exists
+
     - name: Validate Suricata configuration
       command: suricata -T -c /etc/suricata/suricata.yaml
       register: suricata_test

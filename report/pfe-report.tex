@@ -4,7 +4,18 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[english]{babel}
-\usepackage{geometry}
+\usepackage[a4paper, margin=2.5cm]{geometry}
+% Line spacing = 1.15
+\usepackage{setspace}
+\setstretch{1.15}
+% Paragraph indentation = 0.50 cm
+\setlength{\parindent}{0.5cm}
+\setlength{\parskip}{0pt}
+% Justified text
+\usepackage{ragged2e}
+\justifying
+\usepackage{newtxtext}
+\usepackage{newtxmath}
 \usepackage{graphicx}
 \usepackage{xcolor}
 \usepackage{hyperref}
@@ -35,6 +46,7 @@
 \usepackage{tcolorbox}
 \usepackage{acronym}
 \usepackage{minitoc}
+\usepackage{pdfpages}
 \tcbuselibrary{skins,breakable}
 \usetikzlibrary{shapes,arrows,arrows.meta,positioning,fit,backgrounds,calc,shadows}
 
@@ -93,17 +105,35 @@
   {\normalfont\large\bfseries\color{espritgray}}{\thesubsection}{1em}{}
 \titleformat{\subsubsection}
   {\normalfont\normalsize\bfseries\color{espritgray}}{\thesubsubsection}{1em}{}
+% ── Header / footer ─────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
 
-%% ── Header / footer ─────────────────────────────────────────
-\pagestyle{fancy}\fancyhf{}
-\fancyhead[L]{\small\color{espritgray}\leftmark}
+\fancyhead[L]{\small\color{espritgray}\nouppercase{\leftmark}}
 \fancyhead[R]{\small\color{espritgray}ESPRIT PFE 2025--2026}
-\fancyfoot[L]{\small\color{espritgray}Ismail Triki}
-\fancyfoot[C]{\color{espritgray}\thepage}
-\fancyfoot[R]{\small\color{espritgray}ESPRIT}
+
+% Page number bottom right
+\fancyfoot[R]{\small\color{espritgray}\thepage}
+
 \renewcommand{\headrulewidth}{0.4pt}
 \renewcommand{\headrule}{\hbox to\headwidth{\color{espritblue}\leaders\hrule height \headrulewidth\hfill}}
+\renewcommand{\footrulewidth}{0pt}
 
+% Same style for chapter-opening pages, bibliography, appendices, etc.
+\fancypagestyle{plain}{
+  \fancyhf{}
+  \fancyhead[L]{\small\color{espritgray}\nouppercase{\leftmark}}
+  \fancyhead[R]{\small\color{espritgray}ESPRIT PFE 2025--2026}
+  \fancyfoot[R]{\small\color{espritgray}\thepage}
+  \renewcommand{\headrulewidth}{0.4pt}
+  \renewcommand{\headrule}{\hbox to\headwidth{\color{espritblue}\leaders\hrule height \headrulewidth\hfill}}
+  \renewcommand{\footrulewidth}{0pt}
+}
+
+% Strong override: force LaTeX plain pages to behave like fancy pages
+\makeatletter
+\let\ps@plain\ps@fancy
+\makeatother
 %% ── Custom boxes ─────────────────────────────────────────────
 \newtcolorbox{kpibox}{enhanced,colback=lightblue,colframe=espritblue,
   arc=4pt,boxrule=1.5pt,before skip=10pt,after skip=10pt}
@@ -121,65 +151,7 @@
 %%─────────────────────────────────────────────────────────────
 %% TITLE PAGE
 %%─────────────────────────────────────────────────────────────
-\begin{titlepage}
-\thispagestyle{empty}
-\begin{center}
-
-\textcolor{espritblue}{\rule{\linewidth}{3pt}}
-\vspace{0.3cm}
-
-{\large\textbf{République Tunisienne}}\\[0.1cm]
-{\large Ministère de l'Enseignement Supérieur et de la Recherche Scientifique}\\[0.3cm]
-
-\textcolor{espritblue}{\rule{\linewidth}{1pt}}
-\vspace{0.4cm}
-
-\begin{minipage}{0.45\textwidth}
-  \centering
-  \fbox{\parbox{4cm}{\centering\vspace{1cm}{\large\textbf{ESPRIT}}\\\vspace{0.2cm}Logo\vspace{1cm}}}
-\end{minipage}
-\hfill
-\begin{minipage}{0.45\textwidth}
-  \centering
-  \fbox{\parbox{4cm}{\centering\vspace{1cm}{\large\textbf{Flexos}}\\\vspace{0.2cm}Tunisie Logo\vspace{1cm}}}
-\end{minipage}
-
-\vspace{0.5cm}
-{\large\textbf{ESPRIT --- École Supérieure Privée d'Ingénierie et de Technologies}}\\[0.1cm]
-{\normalsize Department of Computer Science Engineering}
-
-\vspace{0.6cm}
-\textcolor{espritblue}{\rule{0.6\linewidth}{1.5pt}}
-\vspace{0.4cm}
-
-{\large Final Year Project Report (PFE)}\\[0.3cm]
-{\large\textit{Academic Year 2025--2026}}
-
-\vspace{0.6cm}
-\textcolor{espritblue}{\rule{\linewidth}{2pt}}
-\vspace{0.3cm}
-
-{\Huge\bfseries\color{espritblue}
-Implementation of a Cloud-Native\\[0.3cm]
-Open-Source SOC Platform}
-
-\vspace{0.3cm}
-\textcolor{espritblue}{\rule{\linewidth}{2pt}}
-
-\vspace{0.7cm}
-\begin{tabular}{ll}
-\textbf{Submitted by:}   & Ismail Triki \\[0.2cm]
-\textbf{Supervised by:}  & [Academic Supervisor -- ESPRIT] \\[0.2cm]
-\textbf{Host Company:}   & Flexos Tunisie \\[0.2cm]
-\textbf{Company Tutor:}  & [Company Tutor -- Flexos Tunisie] \\[0.2cm]
-\end{tabular}
-
-\vfill
-\textcolor{espritblue}{\rule{\linewidth}{3pt}}
-{\normalsize Academic Year 2025--2026}
-\end{center}
-\end{titlepage}
-
+\includepdf[pages=2]{frontmatter/frontback.pdf}
 %%─────────────────────────────────────────────────────────────
 %% DEDICATION
 %%─────────────────────────────────────────────────────────────
@@ -204,18 +176,17 @@ whose trust and collaboration made this project possible.
 \chapter*{Acknowledgements}
 \addcontentsline{toc}{chapter}{Acknowledgements}
 
-I would like to express my deepest gratitude to all those who contributed to the successful completion of this final year project.
+First and foremost, I thank Allah, the Most Merciful, for granting me the strength, patience, guidance, and opportunities that made this work possible. Every step of this journey was, before anything else, by His grace.
 
-First and foremost, I extend my sincere thanks to my academic supervisor at ESPRIT for the guidance, constructive feedback, and continuous encouragement throughout this project.
+I would like to express my deepest gratitude to my beloved parents and to my grandmother, whose unconditional love, prayers, sacrifices, and constant support have shaped the person I am today. Their patience, trust, and belief in me have been a source of strength throughout this final year project. I could never fully repay what they have done for me, but I hope this work makes them proud.
 
-I am particularly grateful to the team at \textbf{Flexos Tunisie} for providing the technical infrastructure, the professional environment, and the freedom to explore and implement a complex cybersecurity platform. Their mentorship and trust were invaluable.
+I am also sincerely grateful to my sister, Yesmine, and my brother, Sofien, for their encouragement, presence, and support throughout this journey. I also keep a special thought for my late uncle, who supported me during my first year of studies. His kindness and generosity will always remain part of my academic journey. May Allah have mercy on him.
 
-My thanks also go to the entire faculty of the Computer Science Department at ESPRIT, whose rigorous academic programme prepared me to tackle real-world engineering challenges.
+I would like to thank my cousin Bayrem for his support and for the inspiration he has given me through his professional journey. I am also thankful to my friends Ahmed, Ali, Islem, Jasser, Moataz, and Eya for their friendship, encouragement, and support during this demanding period.
 
-I would like to acknowledge the open-source communities behind \textbf{Wazuh}, \textbf{TheHive Project}, \textbf{Cortex}, \textbf{Shuffle SOAR}, and \textbf{Suricata}, whose excellent documentation and active communities made this work possible.
+I extend my sincere thanks to my academic supervisor at ESPRIT, Mr. Ramzi Ouafi, for his supervision and feedback throughout this project. I am particularly grateful to my corporate internship supervisor, Mr. Hossem Mannai, and to the team at Flexos Tunisie for providing the technical environment, professional setting, and trust that allowed me to design and implement this cybersecurity platform.
 
-Finally, I am deeply grateful to my family and friends for their constant moral support and encouragement during the demanding months of research and implementation.
-
+My thanks also go to the faculty of the Computer Science Department at ESPRIT for the academic training that prepared me to face real-world engineering challenges. Finally, I acknowledge the open-source communities behind Wazuh, TheHive Project, Cortex, Shuffle SOAR, Suricata, Kubernetes, Ansible, and Terraform, whose documentation, tools, and active communities made this project possible.
 %%─────────────────────────────────────────────────────────────
 %% ABSTRACT (English)
 %%─────────────────────────────────────────────────────────────
@@ -1889,5 +1860,6 @@ T1078     & Valid Accounts (HTTP creds)    & Suricata SID 2006380, Priority 1   
   \item AWX: kind cluster at \texttt{http://localhost:8080}, Job 41 successful
   \item Ansible site.yml: 6 plays (common, k3s-master, k3s-worker, soc-tools-k8s, soc-tools-docker, wazuh-agent)
 \end{itemize}
-
+\clearpage
+\includepdf[pages=1]{frontmatter/frontback.pdf}
 \end{document}

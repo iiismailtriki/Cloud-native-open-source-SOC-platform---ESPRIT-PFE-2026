@@ -1,0 +1,24 @@
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {3.1}Infrastructure Provisioning}{\reset@font\mtcSfont 28}{section.3.1}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.1.1}Proxmox and VM Baseline}{\reset@font\mtcSSfont 28}{subsection.3.1.1}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.1.2}k3s Cluster Deployment (k3s-master and k3s-worker roles)}{\reset@font\mtcSSfont 28}{subsection.3.1.2}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {3.2}Wazuh 4.14.3 Deployment (soc-tools-k8s role)}{\reset@font\mtcSfont 29}{section.3.2}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.2.1}Architecture}{\reset@font\mtcSSfont 29}{subsection.3.2.1}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.2.2}ConfigMap-Based Configuration}{\reset@font\mtcSSfont 29}{subsection.3.2.2}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.2.3}Active Response and Integration Configuration}{\reset@font\mtcSSfont 30}{subsection.3.2.3}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {3.3}Custom Detection Rules}{\reset@font\mtcSfont 31}{section.3.3}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {3.4}Suricata 7.0.3 --- Network IDS (soc-tools-k8s role)}{\reset@font\mtcSfont 33}{section.3.4}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.4.1}DaemonSet Architecture}{\reset@font\mtcSSfont 33}{subsection.3.4.1}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.4.2}Wazuh Integration for Suricata EVE JSON}{\reset@font\mtcSSfont 33}{subsection.3.4.2}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {3.5}TheHive 5.2.8 --- Incident Response Platform (soc-tools-k8s role)}{\reset@font\mtcSfont 34}{section.3.5}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.5.1}Deployment}{\reset@font\mtcSSfont 34}{subsection.3.5.1}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.5.2}Custom Wazuh-TheHive Integration Script}{\reset@font\mtcSSfont 34}{subsection.3.5.2}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {3.6}Cortex 3.1.7 --- Automated Analysis (soc-tools-docker role)}{\reset@font\mtcSfont 36}{section.3.6}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {3.7}Shuffle SOAR --- Workflow Automation (soc-tools-docker role)}{\reset@font\mtcSfont 36}{section.3.7}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {3.8}Windows Endpoint --- Sysmon and Wazuh Agent 008}{\reset@font\mtcSfont 37}{section.3.8}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {3.9}Ansible Automation --- Six-Role Deployment}{\reset@font\mtcSfont 37}{section.3.9}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.9.1}Playbook Structure}{\reset@font\mtcSSfont 37}{subsection.3.9.1}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.9.2}Ansible Inventory}{\reset@font\mtcSSfont 38}{subsection.3.9.2}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {3.10}GitHub Actions CI/CD Pipeline}{\reset@font\mtcSfont 39}{section.3.10}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {3.11}AWX Automation UI and Terraform IaC}{\reset@font\mtcSfont 39}{section.3.11}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.11.1}AWX Configuration}{\reset@font\mtcSSfont 40}{subsection.3.11.1}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.11.2}Terraform Infrastructure as Code}{\reset@font\mtcSSfont 40}{subsection.3.11.2}}

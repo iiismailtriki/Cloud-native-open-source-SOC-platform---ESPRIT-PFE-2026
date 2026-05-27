@@ -1,0 +1,25 @@
+\babel@toc {english}{}\relax 
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {1.1}{\ignorespaces Coverage areas targeted by the proposed open-source SOC platform}}{15}{table.caption.5}%
+\contentsline {table}{\numberline {1.2}{\ignorespaces Project sprint plan}}{17}{table.caption.6}%
+\contentsline {table}{\numberline {1.3}{\ignorespaces Comparison of commercial and open-source SIEM/SOC solutions}}{20}{table.caption.8}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {2.1}{\ignorespaces Cluster node configuration}}{23}{table.caption.10}%
+\contentsline {table}{\numberline {2.2}{\ignorespaces Kubernetes namespace allocation}}{24}{table.caption.11}%
+\contentsline {table}{\numberline {2.3}{\ignorespaces Platform service port mapping}}{24}{table.caption.12}%
+\contentsline {table}{\numberline {2.4}{\ignorespaces Local AWX demo component status}}{25}{table.caption.14}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {3.1}{\ignorespaces Custom Wazuh detection rules}}{31}{table.caption.16}%
+\contentsline {table}{\numberline {3.2}{\ignorespaces Ansible deployment phases and roles}}{38}{table.caption.17}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {4.1}{\ignorespaces Test environment summary}}{41}{table.caption.18}%
+\contentsline {table}{\numberline {4.2}{\ignorespaces SSH brute force detection timeline --- Run 2 (2026-05-01 15:10 UTC)}}{42}{table.caption.19}%
+\contentsline {table}{\numberline {4.3}{\ignorespaces Suricata detection statistics (as of 2026-05-02)}}{44}{table.caption.20}%
+\contentsline {table}{\numberline {4.4}{\ignorespaces Suricata signatures with highest detection count}}{44}{table.caption.21}%
+\contentsline {table}{\numberline {4.5}{\ignorespaces Windows Sysmon events detected (2026-05-02, 24-hour window)}}{45}{table.caption.22}%
+\contentsline {table}{\numberline {4.6}{\ignorespaces MITRE ATT\&CK techniques detected by the platform}}{46}{table.caption.23}%
+\contentsline {table}{\numberline {4.7}{\ignorespaces validate.sh -- all 17 check descriptions}}{49}{table.caption.24}%
+\contentsline {table}{\numberline {4.8}{\ignorespaces Compliance mapping --- ISO 27001 and PCI-DSS}}{50}{table.caption.25}%
+\contentsline {table}{\numberline {4.9}{\ignorespaces Objective achievement summary}}{52}{table.caption.27}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }

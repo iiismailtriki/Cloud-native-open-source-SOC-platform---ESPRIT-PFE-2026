@@ -1,0 +1,93 @@
+\babel@toc {english}{}\relax 
+\contentsline {chapter}{Acknowledgements}{3}{chapter*.1}%
+\contentsline {chapter}{Abstract}{4}{chapter*.2}%
+\contentsline {chapter}{List of Figures}{8}{chapter*.2}%
+\contentsline {chapter}{List of Tables}{9}{chapter*.2}%
+\contentsline {chapter}{List of Abbreviations}{10}{chapter*.3}%
+\contentsline {chapter}{General Introduction}{12}{chapter*.4}%
+\contentsline {chapter}{\numberline {1}Context, Problem Statement and State of the Art}{14}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Presentation of the Host Organisation}{14}{section.1.1}%
+\contentsline {subsection}{\numberline {1.1.1}Flexos Tunisie}{14}{subsection.1.1.1}%
+\contentsline {subsection}{\numberline {1.1.2}Organisational Security Context}{14}{subsection.1.1.2}%
+\contentsline {subsubsection}{Organisational Security Context}{15}{subsection.1.1.2}%
+\contentsline {section}{\numberline {1.2}Coverage and Exploration Analysis}{15}{section.1.2}%
+\contentsline {subsection}{\numberline {1.2.1}Constraints}{16}{subsection.1.2.1}%
+\contentsline {section}{\numberline {1.3}Proposed Solution Overview}{16}{section.1.3}%
+\contentsline {section}{\numberline {1.4}Project Methodology}{16}{section.1.4}%
+\contentsline {subsection}{\numberline {1.4.1}Scrum Framework}{16}{subsection.1.4.1}%
+\contentsline {subsection}{\numberline {1.4.2}Sprint Planning}{17}{subsection.1.4.2}%
+\contentsline {subsection}{\numberline {1.4.3}Project Gantt Chart}{17}{subsection.1.4.3}%
+\contentsline {section}{\numberline {1.5}State of the Art}{17}{section.1.5}%
+\contentsline {subsection}{\numberline {1.5.1}Security Operations Center (SOC)}{17}{subsection.1.5.1}%
+\contentsline {subsection}{\numberline {1.5.2}Core SOC Component Definitions}{18}{subsection.1.5.2}%
+\contentsline {subsection}{\numberline {1.5.3}Commercial vs.\ Open-Source Tool Comparison}{18}{subsection.1.5.3}%
+\contentsline {subsection}{\numberline {1.5.4}Technology Selection Rationale}{21}{subsection.1.5.4}%
+\contentsline {subsubsection}{Why Wazuh over Elastic SIEM or Splunk?}{21}{subsection.1.5.4}%
+\contentsline {subsubsection}{Why Suricata over Snort?}{21}{subsection.1.5.4}%
+\contentsline {subsubsection}{Why TheHive + Cortex?}{21}{subsection.1.5.4}%
+\contentsline {subsubsection}{Why Shuffle SOAR?}{21}{subsection.1.5.4}%
+\contentsline {subsubsection}{Why k3s over Full Kubernetes?}{21}{subsection.1.5.4}%
+\contentsline {chapter}{\numberline {2}Architecture and Design}{22}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Global Platform Architecture}{22}{section.2.1}%
+\contentsline {subsection}{\numberline {2.1.1}Four-Layer Architecture}{22}{subsection.2.1.1}%
+\contentsline {subsection}{\numberline {2.1.2}Physical Infrastructure Topology}{23}{subsection.2.1.2}%
+\contentsline {subsection}{\numberline {2.1.3}Kubernetes Namespace Organisation}{24}{subsection.2.1.3}%
+\contentsline {subsection}{\numberline {2.1.4}Network Services and Port Mapping}{24}{subsection.2.1.4}%
+\contentsline {section}{\numberline {2.2}DevSecOps Automation Pipeline}{24}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Pipeline Overview}{24}{subsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}Pipeline Stages}{24}{subsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.2.3}Local Demo Architecture}{25}{subsection.2.2.3}%
+\contentsline {section}{\numberline {2.3}Component Interaction and Data Flow}{25}{section.2.3}%
+\contentsline {section}{\numberline {2.4}Operational Models}{26}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}Platform Actors and Responsibilities}{26}{subsection.2.4.1}%
+\contentsline {subsection}{\numberline {2.4.2}SSH Brute-Force Detection Sequence}{27}{subsection.2.4.2}%
+\contentsline {subsection}{\numberline {2.4.3}Deployment Architecture}{27}{subsection.2.4.3}%
+\contentsline {chapter}{\numberline {3}Implementation}{28}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Infrastructure Provisioning}{28}{section.3.1}%
+\contentsline {subsection}{\numberline {3.1.1}Proxmox and VM Baseline}{28}{subsection.3.1.1}%
+\contentsline {subsection}{\numberline {3.1.2}k3s Cluster Deployment (k3s-master and k3s-worker roles)}{28}{subsection.3.1.2}%
+\contentsline {section}{\numberline {3.2}Wazuh 4.14.3 Deployment (soc-tools-k8s role)}{29}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Architecture}{29}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}ConfigMap-Based Configuration}{29}{subsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.2.3}Active Response and Integration Configuration}{30}{subsection.3.2.3}%
+\contentsline {section}{\numberline {3.3}Custom Detection Rules}{31}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Suricata 7.0.3 --- Network IDS (soc-tools-k8s role)}{33}{section.3.4}%
+\contentsline {subsection}{\numberline {3.4.1}DaemonSet Architecture}{33}{subsection.3.4.1}%
+\contentsline {subsection}{\numberline {3.4.2}Wazuh Integration for Suricata EVE JSON}{33}{subsection.3.4.2}%
+\contentsline {section}{\numberline {3.5}TheHive 5.2.8 --- Incident Response Platform (soc-tools-k8s role)}{34}{section.3.5}%
+\contentsline {subsection}{\numberline {3.5.1}Deployment}{34}{subsection.3.5.1}%
+\contentsline {subsection}{\numberline {3.5.2}Custom Wazuh-TheHive Integration Script}{34}{subsection.3.5.2}%
+\contentsline {section}{\numberline {3.6}Cortex 3.1.7 --- Automated Analysis (soc-tools-docker role)}{36}{section.3.6}%
+\contentsline {section}{\numberline {3.7}Shuffle SOAR --- Workflow Automation (soc-tools-docker role)}{36}{section.3.7}%
+\contentsline {section}{\numberline {3.8}Windows Endpoint --- Sysmon and Wazuh Agent 008}{37}{section.3.8}%
+\contentsline {section}{\numberline {3.9}Ansible Automation --- Six-Role Deployment}{37}{section.3.9}%
+\contentsline {subsection}{\numberline {3.9.1}Playbook Structure}{37}{subsection.3.9.1}%
+\contentsline {subsection}{\numberline {3.9.2}Ansible Inventory}{38}{subsection.3.9.2}%
+\contentsline {section}{\numberline {3.10}GitHub Actions CI/CD Pipeline}{39}{section.3.10}%
+\contentsline {section}{\numberline {3.11}AWX Automation UI and Terraform IaC}{39}{section.3.11}%
+\contentsline {subsection}{\numberline {3.11.1}AWX Configuration}{40}{subsection.3.11.1}%
+\contentsline {subsection}{\numberline {3.11.2}Terraform Infrastructure as Code}{40}{subsection.3.11.2}%
+\contentsline {chapter}{\numberline {4}Testing, Validation and Results}{41}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Test Environment}{41}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Scenario 1 --- SSH Brute Force (T1110.001)}{41}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Attack Execution}{41}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}Detection Timeline}{42}{subsection.4.2.2}%
+\contentsline {subsection}{\numberline {4.2.3}Evidence}{42}{subsection.4.2.3}%
+\contentsline {section}{\numberline {4.3}Scenario 2 --- Privilege Escalation (T1548.003)}{43}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Description}{43}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}Trigger Rule}{43}{subsection.4.3.2}%
+\contentsline {subsection}{\numberline {4.3.3}Active Response Configuration}{43}{subsection.4.3.3}%
+\contentsline {section}{\numberline {4.4}Scenario 3 --- Suricata Network Detection (T1046)}{43}{section.4.4}%
+\contentsline {subsection}{\numberline {4.4.1}Suricata Platform Statistics}{44}{subsection.4.4.1}%
+\contentsline {subsection}{\numberline {4.4.2}Notable Suricata Signatures Triggered}{44}{subsection.4.4.2}%
+\contentsline {section}{\numberline {4.5}Scenario 4 --- Windows Endpoint Reconnaissance (T1087.001)}{44}{section.4.5}%
+\contentsline {subsection}{\numberline {4.5.1}Windows Agent Telemetry}{44}{subsection.4.5.1}%
+\contentsline {section}{\numberline {4.6}MITRE ATT\&CK Coverage Matrix}{46}{section.4.6}%
+\contentsline {section}{\numberline {4.7}KPI Summary}{47}{section.4.7}%
+\contentsline {section}{\numberline {4.8}Automated Validation Suite --- 17/17 Passing}{47}{section.4.8}%
+\contentsline {subsection}{\numberline {4.8.1}Validation Check Descriptions}{49}{subsection.4.8.1}%
+\contentsline {section}{\numberline {4.9}ISO 27001 and PCI-DSS Compliance Mapping}{50}{section.4.9}%
+\contentsline {chapter}{General Conclusion and Perspectives}{51}{chapter*.26}%
+\contentsline {chapter}{\numberline {A}validate.sh --- Full Source Code}{56}{appendix.A}%
+\contentsline {chapter}{\numberline {B}MITRE ATT\&CK Technique Details}{59}{appendix.B}%
+\contentsline {chapter}{Appendix C --- Platform Architecture Diagram Reference}{60}{appendix*.31}%

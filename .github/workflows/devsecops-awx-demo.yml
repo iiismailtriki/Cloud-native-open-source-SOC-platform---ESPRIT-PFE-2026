@@ -1,0 +1,94 @@
+name: DevSecOps AWX Auto Demo
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  devsecops-awx-demo:
+    runs-on: [self-hosted, local-awx]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Show DevSecOps context
+        run: |
+          echo "Repository: $GITHUB_REPOSITORY"
+          echo "Commit: $GITHUB_SHA"
+          echo "Runner: self-hosted local laptop runner"
+          echo "Demo chain: GitHub push -> GitHub Actions -> Terraform validation -> AWX API -> Ansible job"
+
+      - name: Validate repository structure
+        run: |
+          test -f .github/workflows/ci.yml
+          test -d terraform/local-libvirt
+          test -f terraform/local-libvirt/main.tf
+          test -f ansible/local-demo/local-demo.yml
+          echo "[OK] Required DevSecOps files exist"
+
+      - name: Terraform IaC validation
+        working-directory: terraform/local-libvirt
+        run: |
+          terraform init -backend=false
+          terraform validate
+          echo "[OK] Terraform IaC validation passed"
+
+      - name: Terraform IaC plan
+        working-directory: terraform/local-libvirt
+        run: |
+          terraform plan -no-color
+          echo "[OK] Terraform plan generated"
+
+      - name: Ansible syntax check
+        run: |
+          ansible-playbook --syntax-check ansible/local-demo/local-demo.yml
+          echo "[OK] Ansible syntax validation passed"
+
+      - name: Check AWX API
+        run: |
+          curl -s -u "${{ secrets.AWX_USER }}:${{ secrets.AWX_PASS }}" "${{ secrets.AWX_URL }}/api/v2/ping/" | python3 -m json.tool | head
+          echo "[OK] AWX API reachable from self-hosted runner"
+
+      - name: Launch AWX Job Template automatically
+        id: launch_awx
+        run: |
+          RESPONSE=$(curl -s -X POST \
+            -u "${{ secrets.AWX_USER }}:${{ secrets.AWX_PASS }}" \
+            "${{ secrets.AWX_URL }}/api/v2/job_templates/10/launch/")
+
+          echo "$RESPONSE" | python3 -m json.tool
+
+          JOB_ID=$(echo "$RESPONSE" | python3 -c "import sys,json; print(json.load(sys.stdin)['job'])")
+          echo "job_id=$JOB_ID" >> "$GITHUB_OUTPUT"
+          echo "[OK] AWX job launched automatically with ID: $JOB_ID"
+
+      - name: Wait for AWX job result
+        run: |
+          JOB_ID="${{ steps.launch_awx.outputs.job_id }}"
+          echo "Waiting for AWX job $JOB_ID..."
+
+          for i in {1..60}; do
+            STATUS=$(curl -s -u "${{ secrets.AWX_USER }}:${{ secrets.AWX_PASS }}" \
+              "${{ secrets.AWX_URL }}/api/v2/jobs/$JOB_ID/" \
+              | python3 -c "import sys,json; print(json.load(sys.stdin)['status'])")
+
+            echo "AWX job status: $STATUS"
+
+            if [ "$STATUS" = "successful" ]; then
+              echo "[OK] AWX job completed successfully"
+              exit 0
+            fi
+
+            if [ "$STATUS" = "failed" ] || [ "$STATUS" = "error" ] || [ "$STATUS" = "canceled" ]; then
+              echo "[ERROR] AWX job ended with status: $STATUS"
+              exit 1
+            fi
+
+            sleep 10
+          done
+
+          echo "[ERROR] Timeout waiting for AWX job"
+          exit 1

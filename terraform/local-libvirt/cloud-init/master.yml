@@ -1,0 +1,18 @@
+#cloud-config
+hostname: soc-master
+manage_etc_hosts: true
+
+users:
+  - name: ismail
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    shell: /bin/bash
+    ssh_authorized_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKcK64+vilyEdZnKJF2D9KUZijFFjd+KcClaWSkJisQ/ ismail@ismail-ASUS-TUF-Gaming-A15-FA506II-TUF506II
+
+package_update: true
+packages:
+  - curl
+  - wget
+  - apt-transport-https
+  - python3
+  - python3-pip

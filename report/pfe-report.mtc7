@@ -1,0 +1,21 @@
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {1.1}Presentation of the Host Organisation}{\reset@font\mtcSfont 14}{section.1.1}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {1.1.1}Flexos Tunisie}{\reset@font\mtcSSfont 14}{subsection.1.1.1}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {1.1.2}Organisational Security Context}{\reset@font\mtcSSfont 14}{subsection.1.1.2}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode Organisational Security Context}{\reset@font\mtcSSSfont 15}{subsection.1.1.2}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {1.2}Coverage and Exploration Analysis}{\reset@font\mtcSfont 15}{section.1.2}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {1.2.1}Constraints}{\reset@font\mtcSSfont 16}{subsection.1.2.1}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {1.3}Proposed Solution Overview}{\reset@font\mtcSfont 16}{section.1.3}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {1.4}Project Methodology}{\reset@font\mtcSfont 16}{section.1.4}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {1.4.1}Scrum Framework}{\reset@font\mtcSSfont 16}{subsection.1.4.1}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {1.4.2}Sprint Planning}{\reset@font\mtcSSfont 17}{subsection.1.4.2}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {1.4.3}Project Gantt Chart}{\reset@font\mtcSSfont 17}{subsection.1.4.3}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {1.5}State of the Art}{\reset@font\mtcSfont 17}{section.1.5}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {1.5.1}Security Operations Center (SOC)}{\reset@font\mtcSSfont 17}{subsection.1.5.1}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {1.5.2}Core SOC Component Definitions}{\reset@font\mtcSSfont 18}{subsection.1.5.2}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {1.5.3}Commercial vs.\ Open-Source Tool Comparison}{\reset@font\mtcSSfont 18}{subsection.1.5.3}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {1.5.4}Technology Selection Rationale}{\reset@font\mtcSSfont 21}{subsection.1.5.4}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode Why Wazuh over Elastic SIEM or Splunk?}{\reset@font\mtcSSSfont 21}{subsection.1.5.4}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode Why Suricata over Snort?}{\reset@font\mtcSSSfont 21}{subsection.1.5.4}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode Why TheHive + Cortex?}{\reset@font\mtcSSSfont 21}{subsection.1.5.4}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode Why Shuffle SOAR?}{\reset@font\mtcSSSfont 21}{subsection.1.5.4}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode Why k3s over Full Kubernetes?}{\reset@font\mtcSSSfont 21}{subsection.1.5.4}}

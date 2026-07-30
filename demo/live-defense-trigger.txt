@@ -1,0 +1,6 @@
+Live DevSecOps demo trigger
+
+Timestamp: Tue Jun 16 10:47:27 AM CEST 2026
+
+This safe commit is used only to trigger the GitHub Actions workflow.
+It does not change Terraform, Ansible, AWX, Wazuh, Suricata, or the VMs.

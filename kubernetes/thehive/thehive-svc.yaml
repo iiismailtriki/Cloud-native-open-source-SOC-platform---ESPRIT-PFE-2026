@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"thehive","namespace":"thehive"},"spec":{"ports":[{"nodePort":31000,"port":9000,"targetPort":9000}],"selector":{"app":"thehive"},"type":"NodePort"}}
+  creationTimestamp: "2026-04-28T11:26:40Z"
+  name: thehive
+  namespace: thehive
+  resourceVersion: "2511947"
+  uid: 457ee2f8-e692-4f6d-af78-b7b0bca3ff49
+spec:
+  clusterIP: 10.43.217.122
+  clusterIPs:
+  - 10.43.217.122
+  externalTrafficPolicy: Cluster
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - nodePort: 31000
+    port: 9000
+    protocol: TCP
+    targetPort: 9000
+  selector:
+    app: thehive
+  sessionAffinity: None
+  type: NodePort
+status:
+  loadBalancer: {}

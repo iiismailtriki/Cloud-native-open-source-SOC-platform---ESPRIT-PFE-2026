@@ -1,0 +1,7 @@
+---
+k3s_version: "v1.34.4+k3s1"
+k3s_token: "LOCAL-SOC-DEMO-TOKEN"
+k3s_master_ip: "192.168.122.35"
+
+wazuh_manager_ip: "192.168.122.35"
+suricata_interface: "ens3"

@@ -15,8 +15,8 @@
     state: present
 
 - name: Set timezone to UTC
-  timezone:
-    name: UTC
+  command: timedatectl set-timezone UTC
+  changed_when: false
 
 - name: Disable swap
   command: swapoff -a

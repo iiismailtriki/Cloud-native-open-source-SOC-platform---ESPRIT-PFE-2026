@@ -1,0 +1,120 @@
+\begin{thebibliography}{10}
+
+\bibitem{wazuh-docs}
+{Wazuh, Inc.}
+\newblock {\em Wazuh Documentation v4.14.3}, 2024.
+\newblock Consulté en mai 2026.
+
+\bibitem{thehive-docs}
+{TheHive Project / StrangeBee}.
+\newblock {\em TheHive Documentation v5.2}, 2024.
+\newblock Consulté en mai 2026.
+
+\bibitem{cortex-docs}
+{TheHive Project / StrangeBee}.
+\newblock {\em Cortex Documentation v3.1}, 2024.
+\newblock Consulté en mai 2026.
+
+\bibitem{suricata-docs}
+{Open Information Security Foundation (OISF)}.
+\newblock {\em Suricata Documentation v7.0}, 2024.
+\newblock Consulté en mai 2026.
+
+\bibitem{shuffle-docs}
+{Shuffle AS}.
+\newblock {\em Shuffle SOAR Documentation}, 2024.
+\newblock Consulté en mai 2026.
+
+\bibitem{k3s-docs}
+{Rancher Labs / SUSE}.
+\newblock {\em k3s Lightweight Kubernetes Documentation}, 2024.
+\newblock Consulté en mai 2026.
+
+\bibitem{kubernetes-docs}
+{The Kubernetes Authors}.
+\newblock {\em Kubernetes Documentation v1.34}, 2024.
+\newblock Consulté en mai 2026.
+
+\bibitem{ansible-docs}
+{Red Hat, Inc.}
+\newblock {\em Ansible Documentation v2.17}, 2024.
+\newblock Consulté en mai 2026.
+
+\bibitem{terraform-libvirt}
+{dmacvicar}.
+\newblock {\em Terraform Provider for libvirt}, 2024.
+\newblock Consulté en mai 2026.
+
+\bibitem{awx-docs}
+{Red Hat, Inc.}
+\newblock {\em AWX (Ansible Tower Open Source) Documentation}, 2024.
+\newblock Consulté en mai 2026.
+
+\bibitem{mitre-attack}
+{MITRE Corporation}.
+\newblock {\em {MITRE ATT\&CK} Enterprise Matrix v15}, 2024.
+\newblock Consulté en mai 2026.
+
+\bibitem{docker-docs}
+{Docker, Inc.}
+\newblock {\em Docker Documentation}, 2024.
+\newblock Consulté en mai 2026.
+
+\bibitem{sysmon-docs}
+{Microsoft Corporation}.
+\newblock {\em Sysmon v15 --- System Monitor}, 2024.
+\newblock Consulté en mai 2026.
+
+\bibitem{proxmox-docs}
+{Proxmox Server Solutions GmbH}.
+\newblock {\em Proxmox VE Documentation v8}, 2024.
+\newblock Consulté en mai 2026.
+
+\bibitem{ibm-breach-2024}
+{IBM Security}.
+\newblock Cost of a data breach report 2024.
+\newblock Technical report, IBM Corporation, 2024.
+
+\bibitem{iso27001}
+{International Organization for Standardization}.
+\newblock {ISO/IEC 27001:2022} --- information security management systems,
+  2022.
+
+\bibitem{pci-dss}
+{PCI Security Standards Council}.
+\newblock {PCI DSS} v4.0 --- payment card industry data security standard,
+  2022.
+
+\bibitem{nist-csf}
+{National Institute of Standards and Technology}.
+\newblock {NIST} cybersecurity framework 2.0.
+\newblock Technical report, NIST, 2024.
+
+\bibitem{emerging-threats}
+{Proofpoint, Inc.}
+\newblock {\em Emerging Threats Open Ruleset}, 2024.
+\newblock Consulté en mai 2026.
+
+\bibitem{cis-windows}
+{Center for Internet Security}.
+\newblock {\em {CIS Microsoft Windows 10 Enterprise Benchmark v1.12.0}}, 2023.
+
+\bibitem{soc-automation}
+Risto Vaarandi and Mauno Pihelgas.
+\newblock Using security logs for collecting and reporting technical security
+  metrics.
+\newblock {\em Proceedings of the 2014 IEEE Military Communications
+  Conference}, pages 294--299, 2014.
+
+\bibitem{siem-survey}
+Antoine Mohasseb et~al.
+\newblock A comparative study of siem solutions for threat detection and
+  compliance.
+\newblock {\em Journal of Network and Computer Applications}, 218:103706, 2023.
+
+\bibitem{wazuh-active-response}
+{Wazuh, Inc.}
+\newblock {\em Wazuh Active Response Documentation}, 2024.
+\newblock Consulté en mai 2026.
+
+\end{thebibliography}

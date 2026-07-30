@@ -4,18 +4,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[english]{babel}
-\usepackage[a4paper, margin=2.5cm]{geometry}
-% Line spacing = 1.15
-\usepackage{setspace}
-\setstretch{1.15}
-% Paragraph indentation = 0.50 cm
-\setlength{\parindent}{0.5cm}
-\setlength{\parskip}{0pt}
-% Justified text
-\usepackage{ragged2e}
-\justifying
-\usepackage{newtxtext}
-\usepackage{newtxmath}
+\usepackage{geometry}
 \usepackage{graphicx}
 \usepackage{xcolor}
 \usepackage{hyperref}
@@ -45,10 +34,7 @@
 \usepackage{pgfgantt}
 \usepackage{tcolorbox}
 \usepackage{acronym}
-
-
-
-\usepackage{pdfpages}
+\usepackage{minitoc}
 \tcbuselibrary{skins,breakable}
 \usetikzlibrary{shapes,arrows,arrows.meta,positioning,fit,backgrounds,calc,shadows}
 
@@ -107,35 +93,17 @@
   {\normalfont\large\bfseries\color{espritgray}}{\thesubsection}{1em}{}
 \titleformat{\subsubsection}
   {\normalfont\normalsize\bfseries\color{espritgray}}{\thesubsubsection}{1em}{}
-% ── Header / footer ─────────────────────────────────────────
-\pagestyle{fancy}
-\fancyhf{}
 
-\fancyhead[L]{\small\color{espritgray}\nouppercase{\leftmark}}
+%% ── Header / footer ─────────────────────────────────────────
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\color{espritgray}\leftmark}
 \fancyhead[R]{\small\color{espritgray}ESPRIT PFE 2025--2026}
-
-% Page number bottom right
-\fancyfoot[R]{\small\color{espritgray}\thepage}
-
+\fancyfoot[L]{\small\color{espritgray}Ismail Triki}
+\fancyfoot[C]{\color{espritgray}\thepage}
+\fancyfoot[R]{\small\color{espritgray}ESPRIT}
 \renewcommand{\headrulewidth}{0.4pt}
 \renewcommand{\headrule}{\hbox to\headwidth{\color{espritblue}\leaders\hrule height \headrulewidth\hfill}}
-\renewcommand{\footrulewidth}{0pt}
 
-% Same style for chapter-opening pages, bibliography, appendices, etc.
-\fancypagestyle{plain}{
-  \fancyhf{}
-  \fancyhead[L]{\small\color{espritgray}\nouppercase{\leftmark}}
-  \fancyhead[R]{\small\color{espritgray}ESPRIT PFE 2025--2026}
-  \fancyfoot[R]{\small\color{espritgray}\thepage}
-  \renewcommand{\headrulewidth}{0.4pt}
-  \renewcommand{\headrule}{\hbox to\headwidth{\color{espritblue}\leaders\hrule height \headrulewidth\hfill}}
-  \renewcommand{\footrulewidth}{0pt}
-}
-
-% Strong override: force LaTeX plain pages to behave like fancy pages
-\makeatletter
-\let\ps@plain\ps@fancy
-\makeatother
 %% ── Custom boxes ─────────────────────────────────────────────
 \newtcolorbox{kpibox}{enhanced,colback=lightblue,colframe=espritblue,
   arc=4pt,boxrule=1.5pt,before skip=10pt,after skip=10pt}
@@ -148,12 +116,70 @@
 
 %%=============================================================
 \begin{document}
-
+\dominitoc
 
 %%─────────────────────────────────────────────────────────────
 %% TITLE PAGE
 %%─────────────────────────────────────────────────────────────
-\includepdf[pages=2]{frontmatter/frontback.pdf}
+\begin{titlepage}
+\thispagestyle{empty}
+\begin{center}
+
+\textcolor{espritblue}{\rule{\linewidth}{3pt}}
+\vspace{0.3cm}
+
+{\large\textbf{République Tunisienne}}\\[0.1cm]
+{\large Ministère de l'Enseignement Supérieur et de la Recherche Scientifique}\\[0.3cm]
+
+\textcolor{espritblue}{\rule{\linewidth}{1pt}}
+\vspace{0.4cm}
+
+\begin{minipage}{0.45\textwidth}
+  \centering
+  \fbox{\parbox{4cm}{\centering\vspace{1cm}{\large\textbf{ESPRIT}}\\\vspace{0.2cm}Logo\vspace{1cm}}}
+\end{minipage}
+\hfill
+\begin{minipage}{0.45\textwidth}
+  \centering
+  \fbox{\parbox{4cm}{\centering\vspace{1cm}{\large\textbf{Flexos}}\\\vspace{0.2cm}Tunisie Logo\vspace{1cm}}}
+\end{minipage}
+
+\vspace{0.5cm}
+{\large\textbf{ESPRIT --- École Supérieure Privée d'Ingénierie et de Technologies}}\\[0.1cm]
+{\normalsize Department of Computer Science Engineering}
+
+\vspace{0.6cm}
+\textcolor{espritblue}{\rule{0.6\linewidth}{1.5pt}}
+\vspace{0.4cm}
+
+{\large Final Year Project Report (PFE)}\\[0.3cm]
+{\large\textit{Academic Year 2025--2026}}
+
+\vspace{0.6cm}
+\textcolor{espritblue}{\rule{\linewidth}{2pt}}
+\vspace{0.3cm}
+
+{\Huge\bfseries\color{espritblue}
+Implementation of a Cloud-Native\\[0.3cm]
+Open-Source SOC Platform}
+
+\vspace{0.3cm}
+\textcolor{espritblue}{\rule{\linewidth}{2pt}}
+
+\vspace{0.7cm}
+\begin{tabular}{ll}
+\textbf{Submitted by:}   & Ismail Triki \\[0.2cm]
+\textbf{Supervised by:}  & [Academic Supervisor -- ESPRIT] \\[0.2cm]
+\textbf{Host Company:}   & Flexos Tunisie \\[0.2cm]
+\textbf{Company Tutor:}  & [Company Tutor -- Flexos Tunisie] \\[0.2cm]
+\end{tabular}
+
+\vfill
+\textcolor{espritblue}{\rule{\linewidth}{3pt}}
+{\normalsize Academic Year 2025--2026}
+\end{center}
+\end{titlepage}
+
 %%─────────────────────────────────────────────────────────────
 %% DEDICATION
 %%─────────────────────────────────────────────────────────────
@@ -178,17 +204,18 @@ whose trust and collaboration made this project possible.
 \chapter*{Acknowledgements}
 \addcontentsline{toc}{chapter}{Acknowledgements}
 
-First and foremost, I thank Allah, the Most Merciful, for granting me the strength, patience, guidance, and opportunities that made this work possible. Every step of this journey was, before anything else, by His grace.
+I would like to express my deepest gratitude to all those who contributed to the successful completion of this final year project.
 
-I would like to express my deepest gratitude to my beloved parents and to my grandmother, whose unconditional love, prayers, sacrifices, and constant support have shaped the person I am today. Their patience, trust, and belief in me have been a source of strength throughout this final year project. I could never fully repay what they have done for me, but I hope this work makes them proud.
+First and foremost, I extend my sincere thanks to my academic supervisor at ESPRIT for the guidance, constructive feedback, and continuous encouragement throughout this project.
 
-I am also sincerely grateful to my sister, Yesmine, and my brother, Sofien, for their encouragement, presence, and support throughout this journey. I also keep a special thought for my late uncle, who supported me during my first year of studies. His kindness and generosity will always remain part of my academic journey. May Allah have mercy on him.
+I am particularly grateful to the team at \textbf{Flexos Tunisie} for providing the technical infrastructure, the professional environment, and the freedom to explore and implement a complex cybersecurity platform. Their mentorship and trust were invaluable.
 
-I would like to thank my cousin Bayrem for his support and for the inspiration he has given me through his professional journey. I am also thankful to my friends Ahmed, Ali, Islem, Jasser, Moataz, and Eya for their friendship, encouragement, and support during this demanding period.
+My thanks also go to the entire faculty of the Computer Science Department at ESPRIT, whose rigorous academic programme prepared me to tackle real-world engineering challenges.
 
-I extend my sincere thanks to my academic supervisor at ESPRIT, Mr. Ramzi Ouafi, for his supervision and feedback throughout this project. I am particularly grateful to my corporate internship supervisor, Mr. Hossem Mannai, and to the team at Flexos Tunisie for providing the technical environment, professional setting, and trust that allowed me to design and implement this cybersecurity platform.
+I would like to acknowledge the open-source communities behind \textbf{Wazuh}, \textbf{TheHive Project}, \textbf{Cortex}, \textbf{Shuffle SOAR}, and \textbf{Suricata}, whose excellent documentation and active communities made this work possible.
 
-My thanks also go to the faculty of the Computer Science Department at ESPRIT for the academic training that prepared me to face real-world engineering challenges. Finally, I acknowledge the open-source communities behind Wazuh, TheHive Project, Cortex, Shuffle SOAR, Suricata, Kubernetes, Ansible, and Terraform, whose documentation, tools, and active communities made this project possible.
+Finally, I am deeply grateful to my family and friends for their constant moral support and encouragement during the demanding months of research and implementation.
+
 %%─────────────────────────────────────────────────────────────
 %% ABSTRACT (English)
 %%─────────────────────────────────────────────────────────────
@@ -284,13 +311,8 @@ This final year project answers that question affirmatively. We present the comp
 
 \section*{Project Motivation}
 
-\subsection*{Project Motivation}
+Flexos Tunisie, a growing technology company in Tunisia, had no centralised log collection, no automated threat detection, and no incident response workflow prior to this project. Security events went unnoticed, and the only defence layer was perimeter firewalling. As the company scaled its operations and handled increasingly sensitive client data, this posture became untenable.
 
-Flexos Tunisie is a Tunisian IT integrator specialized in network infrastructure, cybersecurity solutions, consulting, support, and systems integration. As part of its security activities, the company works with commercial security technologies, including Fortinet-based solutions such as FortiSIEM. While these platforms provide mature and enterprise-grade capabilities, they also involve licensing costs, vendor dependency, and deployment models that may not always be suitable for experimentation, customization, or small and medium-sized enterprise contexts.
-
-The motivation of this project was therefore not to replace an absence of security monitoring, but to explore the feasibility of a cloud-native, open-source SOC platform as a complementary and reproducible alternative. The objective was to evaluate whether open-source tools such as Wazuh, Suricata, TheHive, Cortex, and Shuffle could provide core SOC capabilities, including log collection, threat detection, network monitoring, incident response, case management, and automation, while remaining flexible, cost-effective, and deployable on existing infrastructure.
-
-In this context, the project allowed Flexos Tunisie to assess the technical value of an open-source SOC stack, compare it with licensed commercial approaches, and investigate how DevSecOps automation, Kubernetes orchestration, and Infrastructure-as-Code could improve deployment repeatability and operational control.
 \section*{Project Objectives}
 
 \begin{itemize}
@@ -310,7 +332,7 @@ In this context, the project allowed Flexos Tunisie to assess the technical valu
 %% CHAPTER 1 — CONTEXT, PROBLEM STATEMENT & STATE OF THE ART
 %%=============================================================
 \chapter{Context, Problem Statement and State of the Art}
-
+\minitoc
 \vspace{1cm}
 
 This chapter presents the host organisation Flexos Tunisie, analyses the pre-existing security posture, formulates the problem statement, introduces the proposed solution, describes the project methodology, and concludes with a comparative review of existing SOC tools---justifying each technology choice made.
@@ -325,34 +347,37 @@ The company operates a mixed infrastructure comprising on-premise bare-metal ser
 
 \subsection{Organisational Security Context}
 
-Flexos Tunisie operates in a professional IT and cybersecurity environment where commercial security solutions, including Fortinet-based technologies such as FortiSIEM, are already part of the security ecosystem. These tools provide mature capabilities for monitoring, event correlation, and incident visibility. However, commercial SIEM platforms often involve licensing costs, vendor dependency, and deployment constraints that may limit experimentation, customization, and reproducibility in some contexts.
+Prior to this project, the IT team at Flexos Tunisie managed approximately 30 endpoints with the following security posture:
 
-Within this context, the objective of the project was not to address a complete absence of security monitoring, but to explore a complementary open-source SOC approach. The project aimed to evaluate whether a cloud-native stack based on Wazuh, Suricata, TheHive, Cortex, and Shuffle could reproduce key SOC capabilities such as log collection, threat detection, network monitoring, incident response, case management, and automation.
+\begin{itemize}
+  \item Perimeter firewalls with static, manually maintained rule sets
+  \item Manual and infrequent log review (no centralised collection)
+  \item Antivirus on Windows endpoints only
+  \item No SIEM, no EDR, no NIDS, no incident response workflow
+\end{itemize}
 
-The organisational security context therefore motivated a comparative and experimental approach: building an open-source SOC platform that could be deployed on existing infrastructure, automated through DevSecOps practices, and assessed as a flexible alternative or complement to licensed commercial solutions.
+This reactive posture left the organisation vulnerable to credential attacks, lateral movement, and data exfiltration---all difficult to detect without continuous log correlation.
 
-\subsubsection{Organisational Security Context}
-\section{Coverage and Exploration Analysis}
+\section{Security Gap Analysis}
 
-The analysis focused on the main functional areas that the proposed open-source SOC platform had to cover in order to evaluate its technical value as a complementary approach to licensed commercial solutions. The objective was not to replace the existing security ecosystem, but to assess how an open-source, cloud-native stack could support detection, monitoring, response, automation, and deployment repeatability.
+A preliminary security audit conducted at the start of this internship identified the following critical gaps:
 
 \begin{table}[H]
 \centering
-\caption{Coverage areas targeted by the proposed open-source SOC platform}
-\rowcolors{2}{lightblue}{white}
-\begin{tabularx}{\textwidth}{>{\bfseries}p{3.2cm} X p{2.5cm}}
+\caption{Security gaps identified at Flexos Tunisie}
+\begin{tabularx}{\textwidth}{lXl}
 \toprule
-\textbf{Domain} & \textbf{Objective to Cover} & \textbf{Priority} \\
+\textbf{Domain} & \textbf{Gap} & \textbf{Risk Level} \\
 \midrule
-Log Collection & Centralise security logs from Linux and Windows endpoints through Wazuh agents & High \\
-Threat Detection & Define and validate custom detection rules mapped to MITRE ATT\&CK techniques & High \\
-Incident Response & Create structured cases in TheHive and enrich alerts through Cortex & High \\
-Network Monitoring & Integrate Suricata as a network IDS for traffic inspection and alert generation & High \\
-Automation & Connect Wazuh alerts to Shuffle SOAR workflows and active response actions & High \\
-DevSecOps Deployment & Automate deployment using Ansible, AWX, Terraform, and GitHub Actions & Medium \\
+Log Collection    & No centralised collection; logs scattered across hosts & \textcolor{alertred}{\textbf{Critical}} \\
+Threat Detection  & No automated rules or correlation engine & \textcolor{alertred}{\textbf{Critical}} \\
+Incident Response & No workflow or case management system & \textcolor{alertred}{\textbf{High}} \\
+Network Monitoring & No IDS/IPS on internal segments & \textcolor{alertred}{\textbf{High}} \\
+Endpoint Visibility & Limited to Windows Defender; no EDR & \textcolor{warnorange}{\textbf{Medium}} \\
+Compliance        & No audit trail for ISO 27001 or PCI-DSS & \textcolor{warnorange}{\textbf{Medium}} \\
 \bottomrule
 \end{tabularx}
-\label{tab:coverage-areas}
+\label{tab:gaps}
 \end{table}
 
 \subsection{Constraints}
@@ -451,48 +476,29 @@ A \textbf{Security Operations Center (SOC)} is a centralised unit employing peop
 
 \subsection{Commercial vs.\ Open-Source Tool Comparison}
 
-The definitions above establish the functional building blocks required for the proposed SOC platform. Based on these needs, the next step was to compare commercial and open-source solutions according to cost, operational complexity, scalability, integration capability, and suitability for a small or medium-sized enterprise context. This comparison guided the final technology choices used in the implementation phase.
-
-The selection was based on the following criteria:
-
-\begin{itemize}
-  \item \textbf{Cost efficiency:} preference for tools without licensing fees, suitable for an SME environment.
-  \item \textbf{Integration capability:} ability to exchange alerts, logs, and observables between components.
-  \item \textbf{Automation support:} compatibility with response workflows, APIs, and DevSecOps automation.
-  \item \textbf{Operational maturity:} availability of documentation, community support, and proven production use.
-\end{itemize}
 \begin{table}[H]
 \centering
-\small
 \caption{Comparison of commercial and open-source SIEM/SOC solutions}
-\label{tab:comparison}
-
 \rowcolors{2}{lightblue}{white}
-\begin{tabularx}{\textwidth}{
-  >{\raggedright\arraybackslash}p{2.7cm}
-  >{\raggedright\arraybackslash}p{1.7cm}
-  >{\raggedright\arraybackslash}p{2.6cm}
-  >{\raggedright\arraybackslash}X
-  >{\raggedright\arraybackslash}p{3.2cm}
-}
+\begin{tabularx}{\textwidth}{llXXl}
 \toprule
 \textbf{Tool} & \textbf{Type} & \textbf{Licence / Cost} & \textbf{Strengths} & \textbf{Limitations} \\
 \midrule
 Splunk Enterprise & SIEM & Proprietary / \$150k+/yr & Market leader, rich ecosystem, powerful SPL & Very expensive, heavyweight \\
-IBM QRadar & SIEM & Proprietary / per-EPS & Strong correlation, UEBA, compliance reports & High TCO, long setup \\
-Microsoft Sentinel & SIEM & Pay-per-GB (Azure only) & Native Azure integration, AI-driven analytics & Cloud lock-in, data gravity \\
-Palo Alto XSOAR & SOAR & Proprietary / \$80k+ & Enterprise playbooks, 700+ integrations & Prohibitive for SMEs \\
+IBM QRadar        & SIEM & Proprietary / per-EPS    & Strong correlation, UEBA, compliance reports & High TCO, long setup \\
+Microsoft Sentinel & SIEM & Pay-per-GB (Azure only)  & Native Azure integration, AI-driven & Cloud lock-in, data gravity \\
+Palo Alto XSOAR   & SOAR & Proprietary / \$80k+     & Enterprise playbooks, 700+ integrations & Prohibitive for SMEs \\
 \midrule
-\textbf{Wazuh} & SIEM/EDR & GPL v2 / Free & 3000+ rules, active response, FIM, SCA, Kubernetes-native deployment & Indexer requires resources \\
-\textbf{Suricata} & NIDS & GPL v2 / Free & Multi-threaded inspection, EVE JSON output, JA3/TLS fingerprinting & Needs rule tuning \\
-\textbf{TheHive} & IRP & AGPL v3 / Free & REST API, MISP integration, evidence tracking, case management & Single-organisation free tier \\
-\textbf{Cortex} & Analysis & AGPL v3 / Free & 100+ analysers, responders, API-driven enrichment & Analyser API keys required \\
-\textbf{Shuffle} & SOAR & AGPL v3 / Free & No-code workflows, 400+ integrations, webhook-based triggers & Orborus stability \\
-Snort & NIDS & GPL v2 / Free & Mature, large community & Single-threaded, slower \\
-OSSEC & HIDS & GPL v2 / Free & Legacy agent support & No cluster, limited scalability \\
+\textbf{Wazuh}    & SIEM/EDR & GPL v2 / Free      & 3000+ rules, active response, FIM, SCA, Kubernetes-native & Indexer requires resources \\
+\textbf{Suricata} & NIDS     & GPL v2 / Free      & Multi-threaded, EVE JSON, JA3/TLS fingerprinting & Needs rule tuning \\
+\textbf{TheHive}  & IRP      & AGPL v3 / Free     & REST API, MISP integration, evidence tracking & Single-org free tier \\
+\textbf{Cortex}   & Analysis & AGPL v3 / Free     & 100+ analysers, responders, API-driven & Analyser API keys required \\
+\textbf{Shuffle}  & SOAR     & AGPL v3 / Free     & No-code workflows, 400+ integrations, webhook trigger & Orborus stability \\
+Snort             & NIDS     & GPL v2 / Free      & Mature, large community & Single-threaded, slower \\
+OSSEC             & HIDS     & GPL v2 / Free      & Legacy agent support & No cluster, limited scalability \\
 \bottomrule
 \end{tabularx}
-\normalsize
+\label{tab:comparison}
 \end{table}
 
 \subsection{Technology Selection Rationale}
@@ -521,7 +527,7 @@ k3s is a CNCF-certified lightweight Kubernetes distribution that reduces the con
 %% CHAPTER 2 — ARCHITECTURE AND DESIGN
 %%=============================================================
 \chapter{Architecture and Design}
-
+\minitoc
 \vspace{1cm}
 
 This chapter presents the global platform architecture, the physical and virtual infrastructure, the DevSecOps automation pipeline, and the UML models formalising the system design.
@@ -559,45 +565,34 @@ The SOC platform is organised into four functional layers:
 \caption{Four-layer SOC platform architecture}
 \label{fig:layers}
 \end{figure}
-
 \subsection{Physical Infrastructure Topology}
 
-All nodes run Ubuntu Server 24.04.4 LTS as KVM virtual machines on a Proxmox 8.x hypervisor, connected via a dedicated \texttt{172.16.10.0/24} VLAN.
+All nodes run Ubuntu Server 24.04.4 LTS as KVM virtual machines on a Proxmox 8.x hypervisor, connected via a dedicated 172.16.10.0/24 VLAN.
 
 \begin{table}[H]
 \centering
+\small
 \caption{Cluster node configuration}
-\begin{tabularx}{\textwidth}{llllX}
+\begin{tabularx}{\textwidth}{
+  >{\raggedright\arraybackslash}p{2.3cm}
+  >{\raggedright\arraybackslash}p{2.4cm}
+  >{\raggedright\arraybackslash}p{3cm}
+  >{\raggedright\arraybackslash}p{2.4cm}
+  >{\raggedright\arraybackslash}X
+}
 \toprule
-\textbf{VM Name} & \textbf{IP} & \textbf{Role} & \textbf{OS} & \textbf{Workloads} \\
+\textbf{VM Name} & \textbf{IP} & \textbf{Role} & \textbf{OS} & \textbf{Main Workloads} \\
 \midrule
-master     & 172.16.10.9  & k3s control-plane & Ubuntu 24.04 & Wazuh manager-master, indexer, dashboard \\
-worker1    & 172.16.10.5  & k3s worker        & Ubuntu 24.04 & Wazuh manager-worker, Suricata pod \\
-worker2    & 172.16.10.10 & k3s worker        & Ubuntu 24.04 & TheHive, Suricata, Cortex (Docker), Shuffle (Docker) \\
-ubunttest  & 172.16.10.11 & Attack target     & Ubuntu       & Wazuh agent 007 \\
-windows-soc & 172.16.10.12 & Windows endpoint & Windows 10  & Wazuh agent 008, Sysmon v15 \\
+master & 172.16.10.9 & k3s control-plane & Ubuntu 24.04 & Wazuh Manager Master, Wazuh Indexer, Wazuh Dashboard \\
+worker1 & 172.16.10.5 & k3s worker & Ubuntu 24.04 & Wazuh Manager Worker, Suricata NIDS pod \\
+worker2 & 172.16.10.10 & k3s worker & Ubuntu 24.04 & TheHive, Suricata NIDS pod, Cortex and Shuffle SOAR containers \\
+ubunttest & 172.16.10.11 & Attack target & Ubuntu & Wazuh Agent 007 \\
+windows-soc & 172.16.10.12 & Windows endpoint & Windows 10 & Wazuh Agent 008, Sysmon v15 \\
 \bottomrule
 \end{tabularx}
-\label{tab:nodes}
+\label{tab:cluster-nodes}
+\normalsize
 \end{table}
-
-\subsection{Kubernetes Namespace Organisation}
-
-\begin{table}[H]
-\centering
-\caption{Kubernetes namespace allocation}
-\begin{tabular}{lllll}
-\toprule
-\textbf{Namespace} & \textbf{Pods} & \textbf{Workload Type} & \textbf{Storage} & \textbf{Uptime} \\
-\midrule
-\texttt{wazuh}   & 4 & StatefulSet + Deployment & PVC local-path & 75+ days \\
-\texttt{thehive} & 1 & Deployment               & PVC 5 Gi       & 75+ days \\
-\texttt{nids}    & 2 & DaemonSet                & HostPath       & 35+ days \\
-\bottomrule
-\end{tabular}
-\label{tab:namespaces}
-\end{table}
-
 \subsection{Network Services and Port Mapping}
 
 \begin{table}[H]
@@ -729,8 +724,9 @@ The complete automated response chain for a detected SSH brute-force attack proc
   \item The agent applies an \texttt{iptables} DROP rule to block the attacker IP address for 600 seconds.
   \item In parallel, the alert is forwarded to Shuffle SOAR through a webhook, and a case is created in TheHive through the custom integration script.
 \end{enumerate}
-\subsection{Deployment Architecture}
 
+\subsection{Deployment Architecture}
+The deployment architecture shown in Figure~\ref{fig:deployment} summarises how the main SOC components are distributed across the three Kubernetes nodes and the complementary Docker-based services.
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}[
@@ -777,7 +773,7 @@ The complete automated response chain for a detected SSH brute-force attack proc
 %%=============================================================
 \chapter{Implementation}
 \label{chap:impl}
-
+\minitoc
 \vspace{1cm}
 
 This chapter details the implementation of every platform component: infrastructure provisioning, Wazuh deployment and configuration, custom detection rules, active response, TheHive and Cortex setup, Shuffle SOAR workflow, the Ansible automation architecture, the GitHub Actions CI pipeline, and the AWX local demo.
@@ -1313,7 +1309,7 @@ Cloud-init handles initial OS configuration: SSH key injection, hostname assignm
 %% CHAPTER 4 — TESTING AND RESULTS
 %%=============================================================
 \chapter{Testing, Validation and Results}
-
+\minitoc
 \vspace{1cm}
 
 This chapter presents four attack scenarios mapped to MITRE ATT\&CK, the measured detection KPIs, the 17/17 automated validation suite results, MITRE ATT\&CK coverage, and compliance mapping.
@@ -1854,16 +1850,10 @@ T1547     & Autostart via Registry         & Wazuh FIM registry rules 750--598  
 T1078     & Valid Accounts (HTTP creds)    & Suricata SID 2006380, Priority 1       & Logged, TLS advised \\
 \bottomrule
 \end{longtable}
-\clearpage
-\phantomsection
-\clearpage
-\phantomsection
-\chapter*{Appendix C --- Platform Architecture Diagram Reference}
-\addcontentsline{toc}{chapter}{Appendix C --- Platform Architecture Diagram Reference}
-\markboth{Appendix C. Platform Architecture Diagram Reference}{Appendix C. Platform Architecture Diagram Reference}
+
+\chapter{Platform Architecture Diagram Reference}
 \label{app:arch}
 
-\vspace{-1cm}
 \textbf{Layer 1 --- Physical/Hypervisor:} One Proxmox 8.x host, VLAN \texttt{172.16.10.0/24}, five VMs (master, worker1, worker2, ubunttest, windows-soc).
 
 \textbf{Layer 2 --- Kubernetes:} k3s v1.34.4+k3s1, containerd 2.1.5-k3s1, Flannel CNI (\texttt{10.42.0.0/16}), Service network \texttt{10.43.0.0/16}, local-path StorageProvisioner, three namespaces (\texttt{wazuh}, \texttt{thehive}, \texttt{nids}).
@@ -1891,14 +1881,5 @@ T1078     & Valid Accounts (HTTP creds)    & Suricata SID 2006380, Priority 1   
   \item AWX: kind cluster at \texttt{http://localhost:8080}, Job 41 successful
   \item Ansible site.yml: 6 plays (common, k3s-master, k3s-worker, soc-tools-k8s, soc-tools-docker, wazuh-agent)
 \end{itemize}
-
-% Back cover
-\clearpage
-
-\fancyhf{}
-\renewcommand{\headrulewidth}{0pt}
-\renewcommand{\footrulewidth}{0pt}
-\includepdf[pages=1,pagecommand={\thispagestyle{empty}}]{frontmatter/frontback.pdf}
-
 
 \end{document}

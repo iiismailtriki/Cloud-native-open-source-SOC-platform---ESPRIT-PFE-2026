@@ -1,0 +1,284 @@
+---
+- name: "[LOCAL 1/5] Prepare all local SOC demo nodes"
+  hosts: all
+  become: yes
+  vars_files:
+    - local-vars.yml
+  tasks:
+    - name: Wait for apt lock
+      shell: |
+        while fuser /var/lib/dpkg/lock-frontend >/dev/null 2>&1; do sleep 5; done
+      changed_when: false
+
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Install base packages
+      apt:
+        name:
+          - curl
+          - wget
+          - git
+          - vim
+          - htop
+          - net-tools
+          - ca-certificates
+          - gnupg
+          - lsb-release
+          - apt-transport-https
+          - software-properties-common
+          - python3
+          - python3-pip
+          - jq
+        state: present
+
+    - name: Disable swap for Kubernetes
+      shell: |
+        swapoff -a
+        sed -i '/ swap / s/^/#/' /etc/fstab
+      changed_when: false
+
+    - name: Load Kubernetes modules
+      shell: |
+        modprobe overlay
+        modprobe br_netfilter
+      changed_when: false
+
+    - name: Persist Kubernetes modules
+      copy:
+        dest: /etc/modules-load.d/k3s.conf
+        content: |
+          overlay
+          br_netfilter
+
+    - name: Configure Kubernetes sysctl
+      copy:
+        dest: /etc/sysctl.d/99-kubernetes.conf
+        content: |
+          net.bridge.bridge-nf-call-iptables = 1
+          net.bridge.bridge-nf-call-ip6tables = 1
+          net.ipv4.ip_forward = 1
+
+    - name: Apply sysctl
+      command: sysctl --system
+      changed_when: false
+
+
+- name: "[LOCAL 2/5] Install k3s master"
+  hosts: k3s_master
+  become: yes
+  vars_files:
+    - local-vars.yml
+  tasks:
+    - name: Install k3s server
+      shell: |
+        curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION="{{ k3s_version }}" K3S_TOKEN="{{ k3s_token }}" sh -s - server --disable traefik --node-ip {{ k3s_master_ip }} --write-kubeconfig-mode 644
+      args:
+        creates: /usr/local/bin/k3s
+
+    - name: Wait for k3s API
+      shell: k3s kubectl get nodes
+      register: k3s_api
+      retries: 30
+      delay: 10
+      until: k3s_api.rc == 0
+
+
+- name: "[LOCAL 3/5] Join k3s workers"
+  hosts: k3s_workers
+  become: yes
+  vars_files:
+    - local-vars.yml
+  tasks:
+    - name: Install k3s agent
+      shell: |
+        curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION="{{ k3s_version }}" K3S_URL="https://{{ k3s_master_ip }}:6443" K3S_TOKEN="{{ k3s_token }}" sh -s - agent --node-ip {{ ansible_host }}
+      args:
+        creates: /usr/local/bin/k3s-agent-uninstall.sh
+
+
+- name: "[LOCAL 4/5] Install and validate Suricata IDS on worker1"
+  hosts: suricata_nodes
+  become: yes
+  vars_files:
+    - local-vars.yml
+  tasks:
+    - name: Add Suricata stable PPA
+      apt_repository:
+        repo: ppa:oisf/suricata-stable
+        state: present
+        update_cache: yes
+
+    - name: Repair apt state after previous failed package attempt
+      shell: |
+        dpkg --remove --force-remove-reinstreq suricata-update 2>/dev/null || true
+        apt-get -f install -y
+      changed_when: false
+
+    - name: Install Suricata from OISF stable PPA
+      apt:
+        name: suricata
+        state: present
+        update_cache: yes
+
+    - name: Set HOME_NET for local libvirt network
+      replace:
+        path: /etc/suricata/suricata.yaml
+        regexp: 'HOME_NET:.*'
+        replace: 'HOME_NET: "[192.168.122.0/24]"'
+
+    - name: Ensure Suricata rules directory exists
+      file:
+        path: /var/lib/suricata/rules
+        state: directory
+        owner: suricata
+        group: suricata
+        mode: "0755"
+
+    - name: Update Suricata rules with bundled suricata-update
+      command: suricata-update
+      register: suricata_update
+      changed_when: "'No changes detected' not in (suricata_update.stdout | default(''))"
+      failed_when: false
+
+    - name: Create fallback local rules file if suricata-update did not create rules
+      copy:
+        dest: /var/lib/suricata/rules/suricata.rules
+        owner: suricata
+        group: suricata
+        mode: "0644"
+        content: |
+          alert icmp any any -> any any (msg:"LOCAL DEMO ICMP test rule"; sid:1000001; rev:1;)
+      when: suricata_update.rc != 0
+
+    - name: Check Suricata rules file exists
+      stat:
+        path: /var/lib/suricata/rules/suricata.rules
+      register: suricata_rules_file
+
+    - name: Create fallback rule if rules file is missing
+      copy:
+        dest: /var/lib/suricata/rules/suricata.rules
+        owner: suricata
+        group: suricata
+        mode: "0644"
+        content: |
+          alert icmp any any -> any any (msg:"LOCAL DEMO ICMP test rule"; sid:1000001; rev:1;)
+      when: not suricata_rules_file.stat.exists
+
+    - name: Validate Suricata configuration
+      command: suricata -T -c /etc/suricata/suricata.yaml
+      register: suricata_test
+      changed_when: false
+
+    - name: Show Suricata version/build info
+      command: suricata --build-info
+      register: suricata_build
+      changed_when: false
+      failed_when: false
+
+    - name: Stop packaged Suricata service to avoid systemd capture-mode failure in local VM demo
+      systemd:
+        name: suricata
+        state: stopped
+        enabled: yes
+      failed_when: false
+
+    - name: Write Suricata demo status marker
+      copy:
+        dest: /opt/suricata-demo-status.txt
+        content: |
+          Suricata installed and configuration validated by AWX.
+          Local demo mode: package installed + config test passed.
+          Interface intended for capture: {{ suricata_interface }}
+          Validation command: suricata -T -c /etc/suricata/suricata.yaml
+          Validation rc: {{ suricata_test.rc }}
+
+    - name: Print Suricata validation summary
+      debug:
+        msg:
+          validation: "Suricata config test passed"
+          command: "suricata -T -c /etc/suricata/suricata.yaml"
+          interface: "{{ suricata_interface }}"
+          note: "For local VM demo, systemd service is not blocking the pipeline."
+
+
+- name: "[LOCAL 5/5] Install Wazuh agent on demo nodes"
+  hosts: wazuh_agents
+  become: yes
+  vars_files:
+    - local-vars.yml
+  tasks:
+    - name: Add Wazuh GPG key
+      shell: |
+        curl -s https://packages.wazuh.com/key/GPG-KEY-WAZUH | gpg --dearmor -o /usr/share/keyrings/wazuh.gpg
+      args:
+        creates: /usr/share/keyrings/wazuh.gpg
+
+    - name: Add Wazuh repository
+      copy:
+        dest: /etc/apt/sources.list.d/wazuh.list
+        content: |
+          deb [signed-by=/usr/share/keyrings/wazuh.gpg] https://packages.wazuh.com/4.x/apt/ stable main
+
+    - name: Update apt cache after Wazuh repo
+      apt:
+        update_cache: yes
+
+    - name: Install Wazuh agent
+      shell: |
+        WAZUH_MANAGER="{{ wazuh_manager_ip }}" apt-get install -y wazuh-agent
+      args:
+        creates: /var/ossec/bin/wazuh-control
+
+    - name: Enable and start Wazuh agent
+      systemd:
+        name: wazuh-agent
+        enabled: yes
+        state: started
+      ignore_errors: yes
+
+    - name: Create Wazuh demo marker
+      copy:
+        dest: /opt/wazuh-demo-status.txt
+        content: |
+          Wazuh agent installed for local SOC demo.
+          Manager IP configured: {{ wazuh_manager_ip }}
+
+- name: "[LOCAL FINAL] Verify local SOC demo services"
+  hosts: all
+  become: yes
+  tasks:
+    - name: Check hostname
+      command: hostname
+      changed_when: false
+      register: hostname_out
+
+    - name: Check k3s nodes from master
+      shell: k3s kubectl get nodes -o wide
+      changed_when: false
+      failed_when: false
+      register: k3s_nodes
+      when: inventory_hostname in groups['k3s_master']
+
+    - name: Check Suricata service on Suricata nodes
+      shell: systemctl is-active suricata || true
+      changed_when: false
+      register: suricata_active
+      when: inventory_hostname in groups['suricata_nodes']
+
+    - name: Check Wazuh agent service
+      shell: systemctl is-active wazuh-agent || true
+      changed_when: false
+      register: wazuh_active
+      when: inventory_hostname in groups['wazuh_agents']
+
+    - name: Print demo summary
+      debug:
+        msg:
+          hostname: "{{ hostname_out.stdout }}"
+          k3s_nodes: "{{ k3s_nodes.stdout_lines | default([]) }}"
+          suricata_status: "{{ suricata_active.stdout | default('not installed on this node') }}"
+          wazuh_agent_status: "{{ wazuh_active.stdout | default('not installed on this node') }}"

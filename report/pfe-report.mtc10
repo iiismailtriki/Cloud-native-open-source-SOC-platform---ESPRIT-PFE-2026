@@ -1,0 +1,19 @@
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {4.1}Test Environment}{\reset@font\mtcSfont 41}{section.4.1}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {4.2}Scenario 1 --- SSH Brute Force (T1110.001)}{\reset@font\mtcSfont 41}{section.4.2}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {4.2.1}Attack Execution}{\reset@font\mtcSSfont 41}{subsection.4.2.1}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {4.2.2}Detection Timeline}{\reset@font\mtcSSfont 42}{subsection.4.2.2}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {4.2.3}Evidence}{\reset@font\mtcSSfont 42}{subsection.4.2.3}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {4.3}Scenario 2 --- Privilege Escalation (T1548.003)}{\reset@font\mtcSfont 43}{section.4.3}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {4.3.1}Description}{\reset@font\mtcSSfont 43}{subsection.4.3.1}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {4.3.2}Trigger Rule}{\reset@font\mtcSSfont 43}{subsection.4.3.2}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {4.3.3}Active Response Configuration}{\reset@font\mtcSSfont 43}{subsection.4.3.3}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {4.4}Scenario 3 --- Suricata Network Detection (T1046)}{\reset@font\mtcSfont 43}{section.4.4}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {4.4.1}Suricata Platform Statistics}{\reset@font\mtcSSfont 44}{subsection.4.4.1}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {4.4.2}Notable Suricata Signatures Triggered}{\reset@font\mtcSSfont 44}{subsection.4.4.2}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {4.5}Scenario 4 --- Windows Endpoint Reconnaissance (T1087.001)}{\reset@font\mtcSfont 44}{section.4.5}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {4.5.1}Windows Agent Telemetry}{\reset@font\mtcSSfont 44}{subsection.4.5.1}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {4.6}MITRE ATT\&CK Coverage Matrix}{\reset@font\mtcSfont 46}{section.4.6}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {4.7}KPI Summary}{\reset@font\mtcSfont 47}{section.4.7}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {4.8}Automated Validation Suite --- 17/17 Passing}{\reset@font\mtcSfont 47}{section.4.8}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {4.8.1}Validation Check Descriptions}{\reset@font\mtcSSfont 49}{subsection.4.8.1}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {4.9}ISO 27001 and PCI-DSS Compliance Mapping}{\reset@font\mtcSfont 50}{section.4.9}}
